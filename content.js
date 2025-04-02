@@ -37,6 +37,12 @@ function initializeReadAloud() {
         () => {
             floatingBar.updatePlayPauseButton(false);
             floatingBar.hide();
+        },
+        // Start reading callback
+        () => {
+            // Make sure the floating bar is visible whenever reading starts
+            floatingBar.show();
+            floatingBar.updatePlayPauseButton(true);
         }
     );
 
@@ -192,11 +198,8 @@ function initializeReadAloud() {
         }
 
         // Start reading
+        // The floating bar will be shown automatically via the onStartReading callback
         speechManager.startReading(textNodes, startNodeIndex, startWordIndex);
-
-        // Show the floating bar (even if it wasn't visible before)
-        floatingBar.show();
-        floatingBar.updatePlayPauseButton(true);
     }
 
     /**
@@ -261,11 +264,8 @@ function initializeReadAloud() {
         }
 
         // Start reading
+        // The floating bar will be shown automatically via the onStartReading callback
         speechManager.startReading(textNodes, startNodeIndex, startWordIndex);
-
-        // Show the floating bar
-        floatingBar.show();
-        floatingBar.updatePlayPauseButton(true);
     }
 
     // Add keyboard shortcut for starting/stopping reading

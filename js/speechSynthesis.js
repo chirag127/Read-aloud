@@ -66,10 +66,12 @@ class SpeechManager {
      * Set callbacks for speech events
      * @param {Function} onBoundary - Callback for word boundary event
      * @param {Function} onEnd - Callback for end of speech event
+     * @param {Function} onStartReading - Callback for when reading starts
      */
-    setCallbacks(onBoundary, onEnd) {
+    setCallbacks(onBoundary, onEnd, onStartReading) {
         this.onBoundaryCallback = onBoundary;
         this.onEndCallback = onEnd;
+        this.onStartReadingCallback = onStartReading;
     }
 
     /**
@@ -97,6 +99,11 @@ class SpeechManager {
                         currentNode,
                         currentWord
                     );
+
+                    // Make sure the onStartReadingCallback is called to show the floating bar
+                    if (this.onStartReadingCallback) {
+                        this.onStartReadingCallback();
+                    }
                 }
             }
 
@@ -125,6 +132,11 @@ class SpeechManager {
             this.currentNodeIndex >= this.currentTextNodes.length
         ) {
             return;
+        }
+
+        // Notify that reading is starting
+        if (this.onStartReadingCallback) {
+            this.onStartReadingCallback();
         }
 
         this.readCurrentNode();
@@ -251,9 +263,21 @@ class SpeechManager {
                 console.log(
                     "No active utterance, starting from current position"
                 );
+
+                // Notify that reading is starting/resuming
+                if (this.onStartReadingCallback) {
+                    this.onStartReadingCallback();
+                }
+
                 this.readCurrentNode();
             } else {
                 console.log("Resuming speech");
+
+                // Notify that reading is starting/resuming
+                if (this.onStartReadingCallback) {
+                    this.onStartReadingCallback();
+                }
+
                 this.resume();
             }
         }
