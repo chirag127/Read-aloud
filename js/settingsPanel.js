@@ -34,10 +34,12 @@ class SettingsPanel {
       <h3>Read Aloud Settings</h3>
 
       <label for="read-aloud-speed">Speed</label>
-      <input type="range" id="read-aloud-speed" min="0.5" max="2" step="0.1" value="${
+      <input type="range" id="read-aloud-speed" min="0.5" max="6" step="0.1" value="${
           this.settings.speed
       }">
-      <span id="read-aloud-speed-value">${this.settings.speed.toFixed(1)}</span>
+      <span id="read-aloud-speed-value">${this.settings.speed.toFixed(
+          1
+      )}x</span>
 
       <label for="read-aloud-pitch">Pitch</label>
       <input type="range" id="read-aloud-pitch" min="0.5" max="2" step="0.1" value="${
@@ -83,7 +85,7 @@ class SettingsPanel {
             speedInput.addEventListener("input", () => {
                 const value = parseFloat(speedInput.value);
                 this.settings.speed = value;
-                if (speedValue) speedValue.textContent = value.toFixed(1);
+                if (speedValue) speedValue.textContent = value.toFixed(1) + "x";
                 this.saveSettings();
             });
         }
@@ -166,7 +168,7 @@ class SettingsPanel {
             if (pitchInput) pitchInput.value = this.settings.pitch;
             if (voiceSelect) voiceSelect.value = this.settings.voice;
             if (speedValue)
-                speedValue.textContent = this.settings.speed.toFixed(1);
+                speedValue.textContent = this.settings.speed.toFixed(1) + "x";
             if (pitchValue)
                 pitchValue.textContent = this.settings.pitch.toFixed(1);
 

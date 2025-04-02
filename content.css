@@ -1,99 +1,108 @@
 /* Floating control bar */
 #read-aloud-control-bar {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  z-index: 9999;
-  background-color: #4285f4;
-  color: white;
-  border-radius: 4px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  padding: 8px 12px;
-  display: flex;
-  align-items: center;
-  font-family: Arial, sans-serif;
-  user-select: none;
-  cursor: move;
-  transition: opacity 0.3s ease;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 9999;
+    background-color: #4285f4;
+    color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    user-select: none;
+    cursor: move;
+    transition: opacity 0.3s ease;
 }
 
 #read-aloud-control-bar.hidden {
-  opacity: 0;
-  pointer-events: none;
+    opacity: 0;
+    pointer-events: none;
 }
 
 #read-aloud-control-bar button {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  margin: 0 5px;
-  padding: 5px;
-  font-size: 16px;
-  outline: none;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin: 0 5px;
+    padding: 5px;
+    font-size: 16px;
+    outline: none;
 }
 
 #read-aloud-control-bar button:hover {
-  opacity: 0.8;
+    opacity: 0.8;
 }
 
 #read-aloud-control-bar .separator {
-  width: 1px;
-  height: 20px;
-  background-color: rgba(255, 255, 255, 0.5);
-  margin: 0 5px;
+    width: 1px;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.5);
+    margin: 0 5px;
 }
 
 /* Settings panel */
 #read-aloud-settings-panel {
-  position: fixed;
-  top: 60px;
-  right: 10px;
-  z-index: 9998;
-  background-color: white;
-  border-radius: 4px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  padding: 15px;
-  width: 250px;
-  font-family: Arial, sans-serif;
-  display: none;
+    position: fixed;
+    top: 60px;
+    right: 10px;
+    z-index: 9998;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    width: 250px;
+    font-family: Arial, sans-serif;
+    display: none;
 }
 
 #read-aloud-settings-panel.visible {
-  display: block;
+    display: block;
 }
 
 #read-aloud-settings-panel h3 {
-  margin-top: 0;
-  margin-bottom: 15px;
-  color: #333;
-  font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 16px;
 }
 
 #read-aloud-settings-panel label {
-  display: block;
-  margin-bottom: 5px;
-  color: #555;
-  font-size: 14px;
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    font-size: 14px;
 }
 
 #read-aloud-settings-panel select,
 #read-aloud-settings-panel input {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+#read-aloud-speed-value,
+#read-aloud-pitch-value {
+    display: inline-block;
+    margin-left: 10px;
+    font-weight: bold;
+    color: #4285f4;
+    font-size: 14px;
 }
 
 /* Word highlighting */
 .read-aloud-highlight {
-  background-color: rgba(66, 133, 244, 0.2);
-  border-radius: 2px;
-  transition: background-color 0.1s ease;
+    background-color: rgba(66, 133, 244, 0.2);
+    border-radius: 2px;
+    transition: background-color 0.1s ease;
 }
 
 .read-aloud-highlight.active {
-  background-color: rgba(66, 133, 244, 0.5);
+    background-color: rgba(66, 133, 244, 0.5);
 }
