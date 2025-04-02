@@ -137,32 +137,42 @@ function initializeReadAloud() {
         let startNodeIndex = 0;
         let startWordIndex = 0;
 
+        // Only start from selection if the floating bar is already visible
         if (fromSelection && currentSelection) {
-            const selectedNode =
-                TextExtractor.findSelectedTextNode(currentSelection);
+            // If we're trying to read from a selection but the bar isn't visible, start from the beginning instead
+            if (!floatingBar.isCurrentlyVisible()) {
+                console.log(
+                    "Ignoring selection because floating bar is not visible, starting from beginning"
+                );
+                fromSelection = false;
+            } else {
+                const selectedNode =
+                    TextExtractor.findSelectedTextNode(currentSelection);
 
-            if (selectedNode) {
-                // Find the index of the selected node in our text nodes array
-                for (let i = 0; i < textNodes.length; i++) {
-                    if (textNodes[i].node === selectedNode.node) {
-                        startNodeIndex = i;
+                if (selectedNode) {
+                    // Find the index of the selected node in our text nodes array
+                    for (let i = 0; i < textNodes.length; i++) {
+                        if (textNodes[i].node === selectedNode.node) {
+                            startNodeIndex = i;
 
-                        // Find the word index within the node
-                        const words = TextExtractor.splitIntoWords(
-                            selectedNode.text
-                        );
-                        for (let j = 0; j < words.length; j++) {
-                            if (
-                                selectedNode.startOffset >=
-                                    words[j].startIndex &&
-                                selectedNode.startOffset <= words[j].endIndex
-                            ) {
-                                startWordIndex = j;
-                                break;
+                            // Find the word index within the node
+                            const words = TextExtractor.splitIntoWords(
+                                selectedNode.text
+                            );
+                            for (let j = 0; j < words.length; j++) {
+                                if (
+                                    selectedNode.startOffset >=
+                                        words[j].startIndex &&
+                                    selectedNode.startOffset <=
+                                        words[j].endIndex
+                                ) {
+                                    startWordIndex = j;
+                                    break;
+                                }
                             }
-                        }
 
-                        break;
+                            break;
+                        }
                     }
                 }
             }
@@ -200,8 +210,23 @@ function initializeReadAloud() {
 
     // Add listener for double-click to start reading from that word
     document.addEventListener("dblclick", (e) => {
-        if (currentSelection && currentSelection.toString().trim() !== "") {
+        // Only start reading from selection if the floating bar is already visible
+        if (
+            floatingBar.isCurrentlyVisible() &&
+            currentSelection &&
+            currentSelection.toString().trim() !== ""
+        ) {
+            console.log(
+                "Starting reading from selection with floating bar visible"
+            );
             startReading(true);
+        } else if (
+            currentSelection &&
+            currentSelection.toString().trim() !== ""
+        ) {
+            console.log(
+                "Ignoring selection reading because floating bar is not visible"
+            );
         }
     });
 }
