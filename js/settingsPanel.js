@@ -34,7 +34,7 @@ class SettingsPanel {
       <h3>Read Aloud Settings</h3>
 
       <label for="read-aloud-speed">Speed</label>
-      <input type="range" id="read-aloud-speed" min="0.5" max="8" step="0.1" value="${
+      <input type="range" id="read-aloud-speed" min="0.5" max="16" step="0.1" value="${
           this.settings.speed
       }">
       <span id="read-aloud-speed-value">${this.settings.speed.toFixed(
