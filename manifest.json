@@ -5,7 +5,8 @@
   "description": "Reads web pages aloud with word highlighting",
   "permissions": [
     "storage",
-    "activeTab"
+    "activeTab",
+    "contextMenus"
   ],
   "action": {
     "default_popup": "popup.html",

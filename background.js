@@ -23,6 +23,19 @@ chrome.runtime.onInstalled.addListener(() => {
             }
         });
     });
+
+    // Create context menu items
+    chrome.contextMenus.create({
+        id: "read-selection",
+        title: "Read Selection",
+        contexts: ["selection"],
+    });
+
+    chrome.contextMenus.create({
+        id: "read-from-selection",
+        title: "Read from this text",
+        contexts: ["selection"],
+    });
 });
 
 // Listen for messages from content script
@@ -32,4 +45,21 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse({ success: true });
     }
     return true; // Keep the message channel open for async responses
+});
+
+// Handle context menu clicks
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+    if (info.menuItemId === "read-selection") {
+        // Send message to content script to read the selected text
+        chrome.tabs.sendMessage(tab.id, {
+            action: "readSelection",
+            readFromSelection: false,
+        });
+    } else if (info.menuItemId === "read-from-selection") {
+        // Send message to content script to read from the selected text to the end
+        chrome.tabs.sendMessage(tab.id, {
+            action: "readSelection",
+            readFromSelection: true,
+        });
+    }
 });
