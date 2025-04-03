@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,65 +17,65 @@
             --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             --transition-speed: 0.3s;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-        
+
         header {
             background-color: var(--bg-secondary);
             padding: 2rem 0;
             text-align: center;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
-        
+
         .logo-container {
             display: flex;
             justify-content: center;
             align-items: center;
             margin-bottom: 1rem;
         }
-        
+
         .logo {
             width: 80px;
             height: 80px;
             margin-right: 1rem;
         }
-        
+
         .header-content h1 {
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
             color: var(--accent-color);
         }
-        
+
         .tagline {
             font-size: 1.2rem;
             color: var(--text-secondary);
             margin-bottom: 1.5rem;
         }
-        
+
         .btn-container {
             display: flex;
             justify-content: center;
             gap: 1rem;
             flex-wrap: wrap;
         }
-        
+
         .btn {
             display: inline-block;
             padding: 0.8rem 1.5rem;
@@ -85,52 +86,52 @@
             font-weight: 500;
             transition: background-color var(--transition-speed) ease;
         }
-        
+
         .btn:hover {
             background-color: var(--accent-hover);
             transform: translateY(-2px);
         }
-        
+
         .btn-outline {
             background-color: transparent;
             border: 2px solid var(--accent-color);
         }
-        
+
         .btn-outline:hover {
             background-color: rgba(66, 133, 244, 0.1);
         }
-        
+
         section {
             padding: 4rem 0;
         }
-        
+
         .section-title {
             text-align: center;
             margin-bottom: 3rem;
             position: relative;
         }
-        
+
         .section-title h2 {
             font-size: 2rem;
             display: inline-block;
             padding-bottom: 0.5rem;
             border-bottom: 3px solid var(--accent-color);
         }
-        
+
         .about-content {
             max-width: 800px;
             margin: 0 auto;
             text-align: center;
             font-size: 1.1rem;
         }
-        
+
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
         }
-        
+
         .feature-card {
             background-color: var(--bg-tertiary);
             border-radius: 8px;
@@ -138,24 +139,25 @@
             box-shadow: var(--card-shadow);
             transition: transform var(--transition-speed) ease;
         }
-        
+
         .feature-card:hover {
             transform: translateY(-5px);
         }
-        
+
         .feature-card h3 {
             color: var(--accent-color);
             margin-bottom: 1rem;
             font-size: 1.3rem;
         }
-        
+
         .feature-icon {
             font-size: 2.5rem;
             margin-bottom: 1rem;
             color: var(--accent-color);
         }
-        
-        .installation-steps, .usage-steps {
+
+        .installation-steps,
+        .usage-steps {
             max-width: 800px;
             margin: 0 auto;
             background-color: var(--bg-tertiary);
@@ -163,13 +165,13 @@
             padding: 2rem;
             box-shadow: var(--card-shadow);
         }
-        
+
         .step {
             margin-bottom: 1.5rem;
             display: flex;
             align-items: flex-start;
         }
-        
+
         .step-number {
             background-color: var(--accent-color);
             color: white;
@@ -182,7 +184,7 @@
             margin-right: 1rem;
             flex-shrink: 0;
         }
-        
+
         .tech-stack {
             display: flex;
             justify-content: center;
@@ -190,7 +192,7 @@
             gap: 1.5rem;
             margin-top: 2rem;
         }
-        
+
         .tech-item {
             background-color: var(--bg-tertiary);
             border-radius: 8px;
@@ -199,53 +201,54 @@
             width: 150px;
             box-shadow: var(--card-shadow);
         }
-        
+
         footer {
             background-color: var(--bg-secondary);
             padding: 2rem 0;
             text-align: center;
             margin-top: 2rem;
         }
-        
+
         .footer-links {
             display: flex;
             justify-content: center;
             gap: 1.5rem;
             margin: 1rem 0;
         }
-        
+
         .footer-link {
             color: var(--text-secondary);
             text-decoration: none;
             transition: color var(--transition-speed) ease;
         }
-        
+
         .footer-link:hover {
             color: var(--accent-color);
         }
-        
+
         .copyright {
             color: var(--text-secondary);
             font-size: 0.9rem;
             margin-top: 1rem;
         }
-        
+
         @media (max-width: 768px) {
             .features-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .btn-container {
                 flex-direction: column;
                 align-items: center;
             }
-            
+
             .header-content h1 {
                 font-size: 2rem;
             }
         }
     </style>
 </head>
+
 <body>
     <header>
         <div class="container">
@@ -256,24 +259,27 @@
                 <h1>Read Aloud</h1>
                 <p class="tagline">Listen to web pages with word highlighting and customizable controls</p>
                 <div class="btn-container">
-                    <a href="https://github.com/your-username/Read-aloud" class="btn">GitHub Repository</a>
+                    <a href="https://github.com/chirag127/Read-aloud" class="btn">GitHub Repository</a>
                     <a href="privacy-policy.html" class="btn btn-outline" target="_blank">Privacy Policy</a>
                 </div>
             </div>
         </div>
     </header>
-    
+
     <section id="about">
         <div class="container">
             <div class="section-title">
                 <h2>About</h2>
             </div>
             <div class="about-content">
-                <p>Read Aloud is a Chrome extension that transforms your browsing experience by reading web content aloud. Whether you're multitasking, have visual impairments, or simply prefer auditory learning, Read Aloud makes web content more accessible with its intuitive interface and powerful text-to-speech capabilities.</p>
+                <p>Read Aloud is a Chrome extension that transforms your browsing experience by reading web content
+                    aloud. Whether you're multitasking, have visual impairments, or simply prefer auditory learning,
+                    Read Aloud makes web content more accessible with its intuitive interface and powerful
+                    text-to-speech capabilities.</p>
             </div>
         </div>
     </section>
-    
+
     <section id="features">
         <div class="container">
             <div class="section-title">
@@ -283,17 +289,20 @@
                 <div class="feature-card">
                     <div class="feature-icon">🔊</div>
                     <h3>Word Highlighting</h3>
-                    <p>Follow along easily with real-time word highlighting as the text is read aloud, enhancing comprehension and focus.</p>
+                    <p>Follow along easily with real-time word highlighting as the text is read aloud, enhancing
+                        comprehension and focus.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">⚡</div>
                     <h3>Adjustable Speed</h3>
-                    <p>Customize the reading speed up to 4x to match your listening preference and save time on longer content.</p>
+                    <p>Customize the reading speed up to 4x to match your listening preference and save time on longer
+                        content.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🎛️</div>
                     <h3>Floating Control Bar</h3>
-                    <p>Access play, pause, and settings controls from anywhere on the page with our always-visible floating control bar.</p>
+                    <p>Access play, pause, and settings controls from anywhere on the page with our always-visible
+                        floating control bar.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">📑</div>
@@ -303,17 +312,19 @@
                 <div class="feature-card">
                     <div class="feature-icon">📱</div>
                     <h3>Smart Scrolling</h3>
-                    <p>Automatically scrolls to keep the current text in view, even when it's hidden or covered by other elements.</p>
+                    <p>Automatically scrolls to keep the current text in view, even when it's hidden or covered by other
+                        elements.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🔧</div>
                     <h3>Customizable Voice</h3>
-                    <p>Choose from available system voices and adjust pitch to personalize your listening experience.</p>
+                    <p>Choose from available system voices and adjust pitch to personalize your listening experience.
+                    </p>
                 </div>
             </div>
         </div>
     </section>
-    
+
     <section id="installation">
         <div class="container">
             <div class="section-title">
@@ -323,7 +334,9 @@
                 <div class="step">
                     <div class="step-number">1</div>
                     <div class="step-content">
-                        <p>Download the extension files from the <a href="https://github.com/your-username/Read-aloud" style="color: var(--accent-color);">GitHub repository</a> by clicking the green "Code" button and selecting "Download ZIP".</p>
+                        <p>Download the extension files from the <a href="https://github.com/chirag127/Read-aloud"
+                                style="color: var(--accent-color);">GitHub repository</a> by clicking the green "Code"
+                            button and selecting "Download ZIP".</p>
                     </div>
                 </div>
                 <div class="step">
@@ -359,7 +372,7 @@
             </div>
         </div>
     </section>
-    
+
     <section id="how-to-use">
         <div class="container">
             <div class="section-title">
@@ -369,37 +382,42 @@
                 <div class="step">
                     <div class="step-number">1</div>
                     <div class="step-content">
-                        <p><strong>Start Reading:</strong> Click the Read Aloud extension icon in your browser toolbar and select "Start Reading" to begin reading from the top of the page.</p>
+                        <p><strong>Start Reading:</strong> Click the Read Aloud extension icon in your browser toolbar
+                            and select "Start Reading" to begin reading from the top of the page.</p>
                     </div>
                 </div>
                 <div class="step">
                     <div class="step-number">2</div>
                     <div class="step-content">
-                        <p><strong>Read from Selection:</strong> Highlight any text on the page, right-click, and select "Read from this text" to start reading from that point.</p>
+                        <p><strong>Read from Selection:</strong> Highlight any text on the page, right-click, and select
+                            "Read from this text" to start reading from that point.</p>
                     </div>
                 </div>
                 <div class="step">
                     <div class="step-number">3</div>
                     <div class="step-content">
-                        <p><strong>Control Playback:</strong> Use the floating control bar to play, pause, or stop the reading at any time.</p>
+                        <p><strong>Control Playback:</strong> Use the floating control bar to play, pause, or stop the
+                            reading at any time.</p>
                     </div>
                 </div>
                 <div class="step">
                     <div class="step-number">4</div>
                     <div class="step-content">
-                        <p><strong>Adjust Settings:</strong> Click the settings icon in the control bar to adjust reading speed, pitch, and voice.</p>
+                        <p><strong>Adjust Settings:</strong> Click the settings icon in the control bar to adjust
+                            reading speed, pitch, and voice.</p>
                     </div>
                 </div>
                 <div class="step">
                     <div class="step-number">5</div>
                     <div class="step-content">
-                        <p><strong>Move the Control Bar:</strong> Click and drag the control bar to reposition it anywhere on the page for your convenience.</p>
+                        <p><strong>Move the Control Bar:</strong> Click and drag the control bar to reposition it
+                            anywhere on the page for your convenience.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    
+
     <section id="technology">
         <div class="container">
             <div class="section-title">
@@ -425,20 +443,21 @@
             </div>
         </div>
     </section>
-    
+
     <footer>
         <div class="container">
             <div class="footer-links">
-                <a href="https://github.com/your-username/Read-aloud" class="footer-link">GitHub Repository</a>
+                <a href="https://github.com/chirag127/Read-aloud" class="footer-link">GitHub Repository</a>
                 <a href="privacy-policy.html" class="footer-link" target="_blank">Privacy Policy</a>
             </div>
             <p class="copyright">© <span id="current-year">2023</span> Read Aloud. All rights reserved.</p>
         </div>
     </footer>
-    
+
     <script>
         // Update copyright year
         document.getElementById('current-year').textContent = new Date().getFullYear();
     </script>
 </body>
+
 </html>
