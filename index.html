@@ -21,155 +21,127 @@
             color: #4285f4;
             margin-bottom: 10px;
         }
-        .logo {
-            width: 128px;
-            height: 128px;
-            margin-bottom: 20px;
-        }
-        .tagline {
-            font-size: 1.2em;
-            color: #666;
-            margin-bottom: 30px;
-        }
-        section {
-            margin-bottom: 40px;
-        }
         h2 {
-            color: #4285f4;
+            color: #3367d6;
+            margin-top: 30px;
             border-bottom: 1px solid #eee;
             padding-bottom: 10px;
         }
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+        .logo {
+            width: 128px;
+            height: auto;
+            margin-bottom: 20px;
         }
-        .feature-card {
-            background: #f9f9f9;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        .feature-list {
+            list-style-type: none;
+            padding-left: 0;
         }
-        .feature-card h3 {
+        .feature-list li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+        .feature-list li:before {
+            content: "✓";
             color: #4285f4;
-            margin-top: 0;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
         }
-        .cta-button {
+        .installation {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 30px 0;
+        }
+        .installation ol {
+            margin-left: 20px;
+        }
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .button {
             display: inline-block;
             background-color: #4285f4;
             color: white;
-            padding: 12px 24px;
-            border-radius: 4px;
+            padding: 10px 20px;
             text-decoration: none;
+            border-radius: 4px;
             font-weight: bold;
             margin-top: 20px;
-            transition: background-color 0.3s;
         }
-        .cta-button:hover {
+        .button:hover {
             background-color: #3367d6;
         }
-        .installation-steps {
-            background: #f5f5f5;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-        .installation-steps ol {
-            margin-left: 20px;
-            padding-left: 20px;
-        }
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-            color: #666;
-        }
-        .footer-links a {
+        .privacy-link {
             color: #4285f4;
-            margin: 0 10px;
             text-decoration: none;
         }
-        .footer-links a:hover {
+        .privacy-link:hover {
             text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <header>
-        <img src="icons/icon128.png" alt="Read Aloud Logo" class="logo">
+        <img src="extension/icons/icon128.png" alt="Read Aloud Logo" class="logo">
         <h1>Read Aloud</h1>
-        <p class="tagline">Listen to web pages with word highlighting</p>
+        <p>A Chrome extension that reads web pages aloud with word highlighting</p>
     </header>
 
-    <section id="overview">
-        <h2>Overview</h2>
-        <p>Read Aloud is a Chrome extension that converts text on web pages to speech, making content more accessible and convenient to consume. Whether you're multitasking, have visual impairments, or simply prefer listening to reading, Read Aloud enhances your browsing experience.</p>
-    </section>
+    <main>
+        <section>
+            <h2>About</h2>
+            <p>Read Aloud is a powerful Chrome extension that converts text on any webpage into speech, making content more accessible and convenient to consume. Whether you're multitasking, have visual impairments, or simply prefer listening to reading, Read Aloud enhances your browsing experience.</p>
+        </section>
 
-    <section id="features">
-        <h2>Features</h2>
-        <div class="feature-grid">
-            <div class="feature-card">
-                <h3>Word Highlighting</h3>
-                <p>Follow along as each word is highlighted in real-time while being read aloud, making it easy to track progress.</p>
-            </div>
-            <div class="feature-card">
-                <h3>Floating Control Bar</h3>
-                <p>Convenient controls for play/pause, stop, and settings that stay visible as you navigate the page.</p>
-            </div>
-            <div class="feature-card">
-                <h3>Read from Selection</h3>
-                <p>Right-click on selected text to start reading from that specific point on the page.</p>
-            </div>
-            <div class="feature-card">
-                <h3>Customizable Voice</h3>
-                <p>Choose from available system voices and adjust speech rate and pitch to your preference.</p>
-            </div>
-            <div class="feature-card">
-                <h3>Smart Text Extraction</h3>
-                <p>Intelligently identifies and reads only the visible, meaningful content on web pages.</p>
-            </div>
-            <div class="feature-card">
-                <h3>Easy to Use</h3>
-                <p>Simple interface with intuitive controls that work across all websites.</p>
-            </div>
-        </div>
-    </section>
+        <section>
+            <h2>Key Features</h2>
+            <ul class="feature-list">
+                <li><strong>Text-to-Speech:</strong> Converts any webpage text into natural-sounding speech</li>
+                <li><strong>Word Highlighting:</strong> Highlights each word as it's being read for easy following</li>
+                <li><strong>Convenient Controls:</strong> Floating control bar with play, pause, and settings</li>
+                <li><strong>Read Selection:</strong> Right-click on selected text to start reading from that point</li>
+                <li><strong>Customizable:</strong> Adjust reading speed, pitch, and choose from available voices</li>
+                <li><strong>Simple Interface:</strong> Easy-to-use popup with one-click reading start</li>
+            </ul>
+        </section>
 
-    <section id="installation">
-        <h2>Installation</h2>
-        <p>Read Aloud is available as a Chrome extension. Follow these simple steps to install:</p>
-        <div class="installation-steps">
+        <section class="installation">
+            <h2>Installation Instructions</h2>
             <ol>
-                <li>Download the extension files from the <a href="https://github.com/your-username/Read-aloud" target="_blank">GitHub repository</a></li>
-                <li>Open Chrome and navigate to <code>chrome://extensions</code></li>
-                <li>Enable "Developer mode" by toggling the switch in the top-right corner</li>
-                <li>Click "Load unpacked" and select the extension directory</li>
-                <li>The Read Aloud extension icon should now appear in your browser toolbar</li>
+                <li>Download the extension from the Chrome Web Store (link coming soon)</li>
+                <li>Click "Add to Chrome" to install the extension</li>
+                <li>Once installed, you'll see the Read Aloud icon in your browser toolbar</li>
+                <li>Navigate to any webpage and click the icon to start reading</li>
+                <li>Alternatively, select text on a page, right-click, and choose "Read from this text"</li>
             </ol>
-        </div>
-        <p>Once installed, simply click the extension icon or right-click on selected text to start using Read Aloud.</p>
-    </section>
+        </section>
 
-    <section id="usage">
-        <h2>How to Use</h2>
-        <p>Using Read Aloud is simple:</p>
-        <ul>
-            <li><strong>Start Reading:</strong> Click the extension icon and then "Start Reading" to begin from the top of the page</li>
-            <li><strong>Read Selection:</strong> Select text on the page, right-click, and choose "Read from this text"</li>
-            <li><strong>Control Playback:</strong> Use the floating control bar to play/pause, stop, or access settings</li>
-            <li><strong>Adjust Settings:</strong> Click the settings icon in the control bar to change voice, speed, and pitch</li>
-        </ul>
-    </section>
+        <section>
+            <h2>How to Use</h2>
+            <p>Using Read Aloud is simple:</p>
+            <ul>
+                <li>Click the Read Aloud icon in your toolbar to start reading from the top of the page</li>
+                <li>Select specific text and right-click to use the "Read from this text" context menu option</li>
+                <li>Use the floating control bar to pause/resume reading or access settings</li>
+                <li>Adjust reading speed, pitch, and voice in the settings panel</li>
+            </ul>
+        </section>
 
-    <footer>
-        <p>&copy; 2023 Read Aloud Extension</p>
-        <div class="footer-links">
-            <a href="privacy-policy.html" target="_blank">Privacy Policy</a>
-            <a href="https://github.com/your-username/Read-aloud" target="_blank">GitHub</a>
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="#" class="button">Download from Chrome Web Store</a>
         </div>
+    </main>
+
+    <footer class="footer">
+        <p>© 2023 Read Aloud. All rights reserved.</p>
+        <p><a href="privacy-policy.html" target="_blank" class="privacy-link">Privacy Policy</a></p>
     </footer>
 </body>
 </html>
