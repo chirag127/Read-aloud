@@ -167,12 +167,22 @@ function initializeReadAloud() {
                     const words = TextExtractor.splitIntoWords(
                         selectedNode.text
                     );
+
+                    console.log("Selection offset:", selectedNode.startOffset);
+                    console.log("Words in node:", words);
+
                     for (let j = 0; j < words.length; j++) {
                         if (
                             selectedNode.startOffset >= words[j].startIndex &&
                             selectedNode.startOffset <= words[j].endIndex
                         ) {
                             startWordIndex = j;
+                            console.log(
+                                "Found starting word index:",
+                                j,
+                                "Word:",
+                                words[j].text
+                            );
                             break;
                         }
                     }

@@ -87,10 +87,11 @@ class TextExtractor {
             }
 
             // Add the text node to our collection
+            // Don't trim the text to preserve original character offsets
             textNodes.push({
                 node: node,
                 parentElement: parentElement,
-                text: node.nodeValue.trim(),
+                text: node.nodeValue,
             });
         }
 
@@ -308,12 +309,20 @@ class TextExtractor {
         const range = selection.getRangeAt(0);
         const startNode = range.startContainer;
 
+        console.log("Selection range:", range);
+        console.log("Start node:", startNode);
+        console.log("Start offset:", range.startOffset);
+
         // If the start node is a text node, return it
         if (startNode.nodeType === Node.TEXT_NODE) {
+            // Get the actual text content without trimming to preserve offsets
+            const nodeText = startNode.nodeValue;
+            console.log("Node text:", nodeText);
+
             return {
                 node: startNode,
                 parentElement: startNode.parentElement,
-                text: startNode.nodeValue.trim(),
+                text: nodeText, // Don't trim to preserve offsets
                 startOffset: range.startOffset,
             };
         }
@@ -331,6 +340,8 @@ class TextExtractor {
         const regex = /\S+/g;
         let match;
 
+        console.log("Splitting text into words:", text);
+
         while ((match = regex.exec(text)) !== null) {
             words.push({
                 text: match[0],
@@ -338,6 +349,8 @@ class TextExtractor {
                 endIndex: match.index + match[0].length,
             });
         }
+
+        console.log("Found words:", words);
 
         return words;
     }

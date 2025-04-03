@@ -152,7 +152,24 @@ class SpeechManager {
         }
 
         const currentNode = this.currentTextNodes[this.currentNodeIndex];
-        const text = currentNode.text;
+        const fullText = currentNode.text;
+        let text = fullText;
+
+        // If we have a word index, start from that word
+        if (this.currentWordIndex > 0) {
+            console.log(`Starting from word index ${this.currentWordIndex}`);
+            const words = TextExtractor.splitIntoWords(fullText);
+
+            // Make sure the word index is valid
+            if (this.currentWordIndex < words.length) {
+                // Get the character index of the start word
+                const startCharIndex = words[this.currentWordIndex].startIndex;
+
+                // Extract text from the start word to the end
+                text = fullText.substring(startCharIndex);
+                console.log(`Starting text: "${text}"`);
+            }
+        }
 
         this.utterance = new SpeechSynthesisUtterance(text);
         this.utterance.rate = this.settings.speed;
@@ -171,18 +188,44 @@ class SpeechManager {
         // Handle word boundaries for highlighting
         this.utterance.onboundary = (event) => {
             if (event.name === "word") {
-                const wordIndex = this.getWordIndexFromCharIndex(
-                    text,
-                    event.charIndex
-                );
-                if (this.highlighter && wordIndex !== -1) {
+                // If we're starting from a substring, we need to adjust the word index
+                let adjustedWordIndex;
+
+                if (this.currentWordIndex > 0 && text !== fullText) {
+                    // We're starting from a substring of the full text
+
+                    // Find the word in the substring
+                    const subTextWordIndex = this.getWordIndexFromCharIndex(
+                        text,
+                        event.charIndex
+                    );
+
+                    if (subTextWordIndex !== -1) {
+                        // Add the offset to get the word index in the full text
+                        adjustedWordIndex =
+                            this.currentWordIndex + subTextWordIndex;
+                    } else {
+                        adjustedWordIndex = -1;
+                    }
+                } else {
+                    // We're reading the full text, so just get the word index directly
+                    adjustedWordIndex = this.getWordIndexFromCharIndex(
+                        text,
+                        event.charIndex
+                    );
+                }
+
+                if (this.highlighter && adjustedWordIndex !== -1) {
                     this.highlighter.highlightWord(
                         this.currentNodeIndex,
-                        wordIndex
+                        adjustedWordIndex
                     );
                 }
                 if (this.onBoundaryCallback) {
-                    this.onBoundaryCallback(this.currentNodeIndex, wordIndex);
+                    this.onBoundaryCallback(
+                        this.currentNodeIndex,
+                        adjustedWordIndex
+                    );
                 }
             }
         };
