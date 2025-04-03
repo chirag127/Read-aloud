@@ -49,12 +49,34 @@ function initializeReadAloud() {
     floatingBar.setCallbacks(
         // Play/Pause callback
         () => {
-            const isPlaying = speechManager.togglePlayPause();
-            return isPlaying;
+            // Check if we're in selection-only mode
+            if (window.readingSelectionOnly) {
+                if (window.speechSynthesis.speaking) {
+                    if (window.speechSynthesis.paused) {
+                        window.speechSynthesis.resume();
+                        return true;
+                    } else {
+                        window.speechSynthesis.pause();
+                        return false;
+                    }
+                }
+                return false;
+            } else {
+                // Normal mode using speech manager
+                const isPlaying = speechManager.togglePlayPause();
+                return isPlaying;
+            }
         },
         // Stop callback
         () => {
-            speechManager.stop();
+            // Check if we're in selection-only mode
+            if (window.readingSelectionOnly) {
+                window.speechSynthesis.cancel();
+                window.readingSelectionOnly = false;
+            } else {
+                // Normal mode using speech manager
+                speechManager.stop();
+            }
             floatingBar.hide();
         }
     );
@@ -101,7 +123,11 @@ function initializeReadAloud() {
         } else if (request.action === "readSelection") {
             // Handle context menu selection reading
             // This should work even if the top bar is not visible
-            readSelectionFromContextMenu();
+            if (request.mode === "selectionOnly") {
+                readSelectionOnly();
+            } else {
+                readSelectionFromContextMenu();
+            }
             sendResponse({ success: true });
         }
         return true;
@@ -126,6 +152,69 @@ function initializeReadAloud() {
         } else {
             currentSelection = null;
         }
+    }
+
+    /**
+     * Read only the selected text
+     * Called from the context menu
+     */
+    function readSelectionOnly() {
+        console.log("Context menu: Reading only the selected text");
+
+        if (!currentSelection || currentSelection.toString().trim() === "") {
+            console.log("No valid selection for context menu reading");
+            return;
+        }
+
+        // Get the selected text
+        const selectedText = currentSelection.toString().trim();
+        console.log("Selected text:", selectedText);
+
+        // Create a temporary speech synthesis utterance
+        const utterance = new SpeechSynthesisUtterance(selectedText);
+
+        // Get settings from the speech manager
+        speechManager.updateSettings().then((settings) => {
+            // Apply settings to the utterance
+            utterance.rate = settings.speed;
+            utterance.pitch = settings.pitch;
+
+            // Set voice if specified
+            if (settings.voice) {
+                const voices = speechSynthesis.getVoices();
+                const selectedVoice = voices.find(
+                    (voice) => voice.name === settings.voice
+                );
+                if (selectedVoice) {
+                    utterance.voice = selectedVoice;
+                }
+            }
+
+            // Set a flag to indicate we're in selection-only mode
+            window.readingSelectionOnly = true;
+
+            // Show the floating bar while reading
+            floatingBar.show();
+            floatingBar.updatePlayPauseButton(true);
+
+            // When the utterance finishes, hide the bar
+            utterance.onend = () => {
+                window.readingSelectionOnly = false;
+                floatingBar.updatePlayPauseButton(false);
+                floatingBar.hide();
+            };
+
+            // Handle errors
+            utterance.onerror = (event) => {
+                console.error("Speech synthesis error:", event);
+                window.readingSelectionOnly = false;
+                floatingBar.updatePlayPauseButton(false);
+                floatingBar.hide();
+            };
+
+            // Speak the selected text
+            speechSynthesis.speak(utterance);
+        });
     }
 
     /**

@@ -24,7 +24,13 @@ chrome.runtime.onInstalled.addListener(() => {
         });
     });
 
-    // Create context menu item
+    // Create context menu items
+    chrome.contextMenus.create({
+        id: "read-selection-only",
+        title: "Read Selection",
+        contexts: ["selection"],
+    });
+
     chrome.contextMenus.create({
         id: "read-from-selection",
         title: "Read from this text",
@@ -43,10 +49,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 // Handle context menu clicks
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-    if (info.menuItemId === "read-from-selection") {
+    if (info.menuItemId === "read-selection-only") {
+        // Send message to content script to read only the selected text
+        chrome.tabs.sendMessage(tab.id, {
+            action: "readSelection",
+            mode: "selectionOnly",
+        });
+    } else if (info.menuItemId === "read-from-selection") {
         // Send message to content script to read from the selected text to the end
         chrome.tabs.sendMessage(tab.id, {
             action: "readSelection",
+            mode: "fromSelection",
         });
     }
 });
