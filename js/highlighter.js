@@ -83,11 +83,45 @@ class Highlighter {
         const highlight = this.activeHighlights[0];
         const rect = highlight.getBoundingClientRect();
 
-        // Check if the highlight is in view
+        // --- START NEW LOGIC: Calculate effective viewport top considering fixed/sticky headers ---
+        let effectiveViewportTop = 0;
+        // Query potentially obstructing elements (fixed or sticky near the top)
+        // Using querySelectorAll for broader compatibility than :where initially considered
+        const potentialObstructions = document.querySelectorAll(
+            '[style*="position: fixed"], [style*="position: sticky"]'
+        );
+
+        potentialObstructions.forEach(el => {
+            try { // Add try-catch for robustness accessing properties
+                const elRect = el.getBoundingClientRect();
+                const style = window.getComputedStyle(el);
+                // Check if element is potentially an obstructing header
+                if (
+                    (style.position === 'fixed' || style.position === 'sticky') &&
+                    elRect.top <= 5 && // Element starts at or near the top
+                    elRect.width > 10 && // Element has some width
+                    elRect.height > 10 && // Element has some height
+                    elRect.bottom > effectiveViewportTop // Only consider elements that push the top down
+                ) {
+                    // Check if the element is actually visible and not transparent
+                    if (this.isVisible(el) && parseFloat(style.opacity) !== 0) { // Check opacity !== 0
+                        effectiveViewportTop = Math.max(effectiveViewportTop, elRect.bottom);
+                    }
+                }
+            } catch (e) {
+                console.error("Error checking potential obstruction:", el, e);
+            }
+        });
+        // Ensure effectiveViewportTop is not below 0
+        effectiveViewportTop = Math.max(0, effectiveViewportTop);
+        // --- END NEW LOGIC ---
+
+
+        // Check if the highlight is in the *effective* view
         const isInView =
-            rect.top >= 0 &&
+            rect.top >= effectiveViewportTop && // Use effective top
             rect.left >= 0 &&
-            rect.bottom <= window.innerHeight &&
+            rect.bottom <= window.innerHeight && // Ignoring potential footers for now
             rect.right <= window.innerWidth;
 
         if (!isInView) {
@@ -101,56 +135,43 @@ class Highlighter {
             );
             console.log("Found scrollable container:", scrollableContainer);
 
+            // Get the original element that contains the text node for scrollIntoView
+            // Reuse the textNode declared earlier in the function scope
+            const parentElement = textNode?.parentElement; // Use optional chaining
+
             if (
                 scrollableContainer === document.documentElement ||
                 scrollableContainer === document.body
             ) {
                 // If the scrollable container is the document itself, use window.scrollTo
+                // Adjust scroll target to account for the effective top, aiming for top third of visible area
+                const visibleHeight = window.innerHeight - effectiveViewportTop;
+                const targetScrollY = rect.top + window.scrollY - effectiveViewportTop - (visibleHeight / 3);
                 console.log(
-                    "Scrolling window to:",
-                    rect.top + window.scrollY - window.innerHeight / 2
+                    "Scrolling window to target Y:", targetScrollY, " (effective top:", effectiveViewportTop, ")"
                 );
                 window.scrollTo({
-                    top: rect.top + window.scrollY - window.innerHeight / 2,
+                    top: Math.max(0, targetScrollY), // Ensure scroll position isn't negative
                     behavior: "smooth",
                 });
+            } else if (parentElement) { // parentElement is already defined using the correct textNode
+                 // If scrolling within a specific container, try scrollIntoView on the parent element first
+                 console.log("Scrolling container element into view:", parentElement);
+                 // Use block: 'nearest' to avoid unnecessary scrolling if already mostly visible
+                 // Use center as fallback? 'nearest' seems safer.
+                 parentElement.scrollIntoView({
+                     behavior: "smooth",
+                     block: "nearest", // Prioritize minimal scrolling
+                     inline: "nearest"
+                 });
+                 // Note: scrollIntoView might not perfectly account for fixed headers *within* the scrollable container.
+                 // Further refinement might involve calculating scroll position manually like before,
+                 // but adjusting for the container's position relative to the effectiveViewportTop.
+                 // Let's stick with scrollIntoView for now due to its simplicity.
             } else {
-                // Calculate the scroll position within the container
-                const containerRect =
-                    scrollableContainer.getBoundingClientRect();
-
-                // Calculate vertical scroll position
-                const highlightRelativeTop = rect.top - containerRect.top;
-                const scrollTop =
-                    scrollableContainer.scrollTop +
-                    highlightRelativeTop -
-                    containerRect.height / 2;
-
-                // Calculate horizontal scroll position if needed
-                const highlightRelativeLeft = rect.left - containerRect.left;
-                const scrollLeft =
-                    scrollableContainer.scrollLeft +
-                    highlightRelativeLeft -
-                    containerRect.width / 2;
-
-                // Check if horizontal scrolling is needed
-                const needsHorizontalScroll =
-                    rect.left < containerRect.left ||
-                    rect.right > containerRect.right;
-
-                console.log("Scrolling container to:", {
-                    top: scrollTop,
-                    left: scrollLeft,
-                });
-
-                // Scroll the container
-                scrollableContainer.scrollTo({
-                    top: scrollTop,
-                    left: needsHorizontalScroll
-                        ? scrollLeft
-                        : scrollableContainer.scrollLeft,
-                    behavior: "smooth",
-                });
+                // Fallback if parentElement is somehow null (shouldn't happen with valid textNode)
+                console.warn("Could not find parentElement for textNode:", textNode);
+                // Optionally add the old manual scroll calculation here as a fallback
             }
         }
     }
