@@ -1,0 +1,1 @@
+make an single index.html file for the discripltion of the extension also add a privacy policy which is linked to this webpage. The privacy policy should be on another page. New page should open on clicking the privacy policy button I will be using the Github pages for hosting this website, link the privacy policy to index.html add Required Permissions in privacy policy
