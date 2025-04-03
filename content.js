@@ -101,7 +101,7 @@ function initializeReadAloud() {
         } else if (request.action === "readSelection") {
             // Handle context menu selection reading
             // This should work even if the top bar is not visible
-            readSelectionFromContextMenu(request.readFromSelection);
+            readSelectionFromContextMenu();
             sendResponse({ success: true });
         }
         return true;
@@ -129,14 +129,11 @@ function initializeReadAloud() {
     }
 
     /**
-     * Read selection from context menu
-     * @param {boolean} readFromSelection - Whether to read from selection to end or just the selection
+     * Read from selection to the end of the page
+     * Called from the context menu
      */
-    function readSelectionFromContextMenu(readFromSelection = false) {
-        console.log(
-            "Context menu reading, readFromSelection:",
-            readFromSelection
-        );
+    function readSelectionFromContextMenu() {
+        console.log("Context menu: Reading from selection to end of page");
 
         if (!currentSelection || currentSelection.toString().trim() === "") {
             console.log("No valid selection for context menu reading");
@@ -185,19 +182,7 @@ function initializeReadAloud() {
             }
         }
 
-        // If we're only reading the selection (not from selection to end)
-        if (!readFromSelection) {
-            // Create a subset of text nodes containing only the selection
-            // This is a simplified implementation - in a real extension, you'd want to
-            // handle multi-node selections more robustly
-            const selectionText = currentSelection.toString();
-            console.log("Reading only selection:", selectionText);
-
-            // For simplicity, we'll just read the node containing the selection
-            // A more complete implementation would extract exactly the selected text
-        }
-
-        // Start reading
+        // Start reading from the selection to the end of the page
         // The floating bar will be shown automatically via the onStartReading callback
         speechManager.startReading(textNodes, startNodeIndex, startWordIndex);
     }

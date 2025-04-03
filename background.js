@@ -24,13 +24,7 @@ chrome.runtime.onInstalled.addListener(() => {
         });
     });
 
-    // Create context menu items
-    chrome.contextMenus.create({
-        id: "read-selection",
-        title: "Read Selection",
-        contexts: ["selection"],
-    });
-
+    // Create context menu item
     chrome.contextMenus.create({
         id: "read-from-selection",
         title: "Read from this text",
@@ -49,17 +43,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 // Handle context menu clicks
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-    if (info.menuItemId === "read-selection") {
-        // Send message to content script to read the selected text
-        chrome.tabs.sendMessage(tab.id, {
-            action: "readSelection",
-            readFromSelection: false,
-        });
-    } else if (info.menuItemId === "read-from-selection") {
+    if (info.menuItemId === "read-from-selection") {
         // Send message to content script to read from the selected text to the end
         chrome.tabs.sendMessage(tab.id, {
             action: "readSelection",
-            readFromSelection: true,
         });
     }
 });
