@@ -1,73 +1,92 @@
 /* Floating control bar */
 #read-aloud-control-bar {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    z-index: 9999;
-    background-color: #4285f4;
-    color: white;
-    border-radius: 4px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    padding: 8px 12px;
-    display: flex;
-    align-items: center;
-    font-family: Arial, sans-serif;
-    user-select: none;
-    cursor: move;
-    transition: opacity 0.3s ease;
+    position: fixed !important;
+    top: 10px !important;
+    right: 10px !important;
+    z-index: 2147483647 !important; /* Maximum possible z-index value */
+    background-color: #4285f4 !important;
+    color: white !important;
+    border-radius: 4px !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
+        0 0 0 2px rgba(255, 255, 255, 0.8) !important;
+    padding: 8px 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    font-family: Arial, sans-serif !important;
+    user-select: none !important;
+    cursor: move !important;
+    transition: opacity 0.3s ease !important;
+    min-width: 120px !important;
+    min-height: 30px !important;
+    backdrop-filter: blur(3px) !important;
+    -webkit-backdrop-filter: blur(3px) !important;
 }
 
 #read-aloud-control-bar.hidden {
-    opacity: 0;
-    pointer-events: none;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
 }
 
 #read-aloud-control-bar button {
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    margin: 0 5px;
-    padding: 5px;
-    font-size: 16px;
-    outline: none;
+    background: none !important;
+    border: none !important;
+    color: white !important;
+    cursor: pointer !important;
+    margin: 0 5px !important;
+    padding: 5px !important;
+    font-size: 16px !important;
+    outline: none !important;
+    position: relative !important;
+    z-index: 2147483647 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
 #read-aloud-control-bar button:hover {
-    opacity: 0.8;
+    opacity: 0.8 !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 #read-aloud-control-bar .separator {
-    width: 1px;
-    height: 20px;
-    background-color: rgba(255, 255, 255, 0.5);
-    margin: 0 5px;
+    width: 1px !important;
+    height: 20px !important;
+    background-color: rgba(255, 255, 255, 0.5) !important;
+    margin: 0 5px !important;
+    position: relative !important;
+    z-index: 2147483647 !important;
 }
 
 /* Settings panel */
 #read-aloud-settings-panel {
-    position: fixed;
-    top: 60px;
-    right: 10px;
-    z-index: 9998;
-    background-color: white;
-    border-radius: 4px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    width: 250px;
-    font-family: Arial, sans-serif;
-    display: none;
+    position: fixed !important;
+    top: 60px !important;
+    right: 10px !important;
+    z-index: 2147483646 !important; /* One less than the control bar */
+    background-color: white !important;
+    border-radius: 4px !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(66, 133, 244, 0.3) !important;
+    padding: 15px !important;
+    width: 250px !important;
+    font-family: Arial, sans-serif !important;
+    display: none !important;
+    backdrop-filter: blur(5px) !important;
+    -webkit-backdrop-filter: blur(5px) !important;
 }
 
 #read-aloud-settings-panel.visible {
-    display: block;
+    display: block !important;
 }
 
 #read-aloud-settings-panel h3 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    color: #333;
-    font-size: 16px;
+    margin-top: 0 !important;
+    margin-bottom: 15px !important;
+    color: #333 !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    position: relative !important;
+    z-index: 2147483646 !important;
 }
 
 #read-aloud-settings-panel label {
@@ -98,11 +117,31 @@
 
 /* Word highlighting */
 .read-aloud-highlight {
-    background-color: rgba(66, 133, 244, 0.2);
-    border-radius: 2px;
-    transition: background-color 0.1s ease;
+    background-color: rgba(66, 133, 244, 0.2) !important;
+    border-radius: 2px !important;
+    transition: background-color 0.1s ease !important;
+    position: absolute !important;
+    z-index: 2147483645 !important; /* High but below the control bar */
+    pointer-events: none !important;
 }
 
 .read-aloud-highlight.active {
-    background-color: rgba(66, 133, 244, 0.5);
+    background-color: rgba(66, 133, 244, 0.5) !important;
+    box-shadow: 0 0 0 1px rgba(66, 133, 244, 0.7) !important;
+}
+
+/* Animation for making the control bar more noticeable */
+@keyframes read-aloud-pulse {
+    0% {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
+            0 0 0 2px rgba(255, 255, 255, 0.8) !important;
+    }
+    50% {
+        box-shadow: 0 2px 15px rgba(66, 133, 244, 0.4),
+            0 0 0 3px rgba(255, 255, 255, 0.9) !important;
+    }
+    100% {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
+            0 0 0 2px rgba(255, 255, 255, 0.8) !important;
+    }
 }
