@@ -91,7 +91,7 @@ A separate `privacy-policy.html` should detail data usage, required permissions,
      - Explain how users will be notified of policy updates.
 
    - **Contact Information**
-     - Provide a method for users to reach out (GitHub issues, email, etc.).
+     - Provide a method for users to reach out (GitHub issues etc.).
 
 ---
 
