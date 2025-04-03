@@ -5,143 +5,440 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Read Aloud - Chrome Extension</title>
     <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent-color: #4285f4;
+            --accent-hover: #3367d6;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --transition-speed: 0.3s;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             line-height: 1.6;
-            color: #333;
-            max-width: 800px;
+        }
+        
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 20px;
         }
+        
         header {
+            background-color: var(--bg-secondary);
+            padding: 2rem 0;
             text-align: center;
-            margin-bottom: 40px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
-        h1 {
-            color: #4285f4;
-            margin-bottom: 10px;
+        
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
         }
-        h2 {
-            color: #3367d6;
-            margin-top: 30px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
+        
         .logo {
-            width: 128px;
-            height: auto;
-            margin-bottom: 20px;
+            width: 80px;
+            height: 80px;
+            margin-right: 1rem;
         }
-        .feature-list {
-            list-style-type: none;
-            padding-left: 0;
+        
+        .header-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
         }
-        .feature-list li {
-            margin-bottom: 15px;
-            padding-left: 30px;
-            position: relative;
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
         }
-        .feature-list li:before {
-            content: "✓";
-            color: #4285f4;
-            position: absolute;
-            left: 0;
-            font-weight: bold;
+        
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
-        .installation {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 5px;
-            margin: 30px 0;
-        }
-        .installation ol {
-            margin-left: 20px;
-        }
-        .footer {
-            margin-top: 50px;
-            text-align: center;
-            font-size: 0.9em;
-            color: #666;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
-        .button {
+        
+        .btn {
             display: inline-block;
-            background-color: #4285f4;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent-color);
             color: white;
-            padding: 10px 20px;
             text-decoration: none;
             border-radius: 4px;
-            font-weight: bold;
-            margin-top: 20px;
+            font-weight: 500;
+            transition: background-color var(--transition-speed) ease;
         }
-        .button:hover {
-            background-color: #3367d6;
+        
+        .btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
         }
-        .privacy-link {
-            color: #4285f4;
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--accent-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(66, 133, 244, 0.1);
+        }
+        
+        section {
+            padding: 4rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent-color);
+        }
+        
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            transition: transform var(--transition-speed) ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-card h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+        
+        .installation-steps, .usage-steps {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .step {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            background-color: var(--accent-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .tech-stack {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .tech-item {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            width: 150px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .footer-link {
+            color: var(--text-secondary);
             text-decoration: none;
+            transition: color var(--transition-speed) ease;
         }
-        .privacy-link:hover {
-            text-decoration: underline;
+        
+        .footer-link:hover {
+            color: var(--accent-color);
+        }
+        
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .header-content h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <img src="extension/icons/icon128.png" alt="Read Aloud Logo" class="logo">
-        <h1>Read Aloud</h1>
-        <p>A Chrome extension that reads web pages aloud with word highlighting</p>
-    </header>
-
-    <main>
-        <section>
-            <h2>About</h2>
-            <p>Read Aloud is a powerful Chrome extension that converts text on any webpage into speech, making content more accessible and convenient to consume. Whether you're multitasking, have visual impairments, or simply prefer listening to reading, Read Aloud enhances your browsing experience.</p>
-        </section>
-
-        <section>
-            <h2>Key Features</h2>
-            <ul class="feature-list">
-                <li><strong>Text-to-Speech:</strong> Converts any webpage text into natural-sounding speech</li>
-                <li><strong>Word Highlighting:</strong> Highlights each word as it's being read for easy following</li>
-                <li><strong>Convenient Controls:</strong> Floating control bar with play, pause, and settings</li>
-                <li><strong>Read Selection:</strong> Right-click on selected text to start reading from that point</li>
-                <li><strong>Customizable:</strong> Adjust reading speed, pitch, and choose from available voices</li>
-                <li><strong>Simple Interface:</strong> Easy-to-use popup with one-click reading start</li>
-            </ul>
-        </section>
-
-        <section class="installation">
-            <h2>Installation Instructions</h2>
-            <ol>
-                <li>Download the extension from the Chrome Web Store (link coming soon)</li>
-                <li>Click "Add to Chrome" to install the extension</li>
-                <li>Once installed, you'll see the Read Aloud icon in your browser toolbar</li>
-                <li>Navigate to any webpage and click the icon to start reading</li>
-                <li>Alternatively, select text on a page, right-click, and choose "Read from this text"</li>
-            </ol>
-        </section>
-
-        <section>
-            <h2>How to Use</h2>
-            <p>Using Read Aloud is simple:</p>
-            <ul>
-                <li>Click the Read Aloud icon in your toolbar to start reading from the top of the page</li>
-                <li>Select specific text and right-click to use the "Read from this text" context menu option</li>
-                <li>Use the floating control bar to pause/resume reading or access settings</li>
-                <li>Adjust reading speed, pitch, and voice in the settings panel</li>
-            </ul>
-        </section>
-
-        <div style="text-align: center; margin-top: 40px;">
-            <a href="#" class="button">Download from Chrome Web Store</a>
+        <div class="container">
+            <div class="logo-container">
+                <img src="extension/icons/icon128.png" alt="Read Aloud Logo" class="logo">
+            </div>
+            <div class="header-content">
+                <h1>Read Aloud</h1>
+                <p class="tagline">Listen to web pages with word highlighting and customizable controls</p>
+                <div class="btn-container">
+                    <a href="https://github.com/your-username/Read-aloud" class="btn">GitHub Repository</a>
+                    <a href="privacy-policy.html" class="btn btn-outline" target="_blank">Privacy Policy</a>
+                </div>
+            </div>
         </div>
-    </main>
-
-    <footer class="footer">
-        <p>© 2023 Read Aloud. All rights reserved.</p>
-        <p><a href="privacy-policy.html" target="_blank" class="privacy-link">Privacy Policy</a></p>
+    </header>
+    
+    <section id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>About</h2>
+            </div>
+            <div class="about-content">
+                <p>Read Aloud is a Chrome extension that transforms your browsing experience by reading web content aloud. Whether you're multitasking, have visual impairments, or simply prefer auditory learning, Read Aloud makes web content more accessible with its intuitive interface and powerful text-to-speech capabilities.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Features</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔊</div>
+                    <h3>Word Highlighting</h3>
+                    <p>Follow along easily with real-time word highlighting as the text is read aloud, enhancing comprehension and focus.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Adjustable Speed</h3>
+                    <p>Customize the reading speed up to 4x to match your listening preference and save time on longer content.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎛️</div>
+                    <h3>Floating Control Bar</h3>
+                    <p>Access play, pause, and settings controls from anywhere on the page with our always-visible floating control bar.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📑</div>
+                    <h3>Read from Selection</h3>
+                    <p>Start reading from any selected text on the page - just highlight and right-click to begin.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Smart Scrolling</h3>
+                    <p>Automatically scrolls to keep the current text in view, even when it's hidden or covered by other elements.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <h3>Customizable Voice</h3>
+                    <p>Choose from available system voices and adjust pitch to personalize your listening experience.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="installation">
+        <div class="container">
+            <div class="section-title">
+                <h2>Installation</h2>
+            </div>
+            <div class="installation-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <p>Download the extension files from the <a href="https://github.com/your-username/Read-aloud" style="color: var(--accent-color);">GitHub repository</a> by clicking the green "Code" button and selecting "Download ZIP".</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <p>Extract the ZIP file to a folder on your computer.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <p>Open Chrome and navigate to <code>chrome://extensions</code>.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <p>Enable "Developer mode" by toggling the switch in the top-right corner.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <p>Click "Load unpacked" and select the "extension" folder from the extracted files.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <p>The Read Aloud extension should now appear in your extensions list and be ready to use!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="how-to-use">
+        <div class="container">
+            <div class="section-title">
+                <h2>How to Use</h2>
+            </div>
+            <div class="usage-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <p><strong>Start Reading:</strong> Click the Read Aloud extension icon in your browser toolbar and select "Start Reading" to begin reading from the top of the page.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <p><strong>Read from Selection:</strong> Highlight any text on the page, right-click, and select "Read from this text" to start reading from that point.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <p><strong>Control Playback:</strong> Use the floating control bar to play, pause, or stop the reading at any time.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <p><strong>Adjust Settings:</strong> Click the settings icon in the control bar to adjust reading speed, pitch, and voice.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <p><strong>Move the Control Bar:</strong> Click and drag the control bar to reposition it anywhere on the page for your convenience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="technology">
+        <div class="container">
+            <div class="section-title">
+                <h2>Technology Stack</h2>
+            </div>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <h3>JavaScript</h3>
+                    <p>Core programming language</p>
+                </div>
+                <div class="tech-item">
+                    <h3>Chrome API</h3>
+                    <p>Extension integration</p>
+                </div>
+                <div class="tech-item">
+                    <h3>Web Speech API</h3>
+                    <p>Text-to-speech functionality</p>
+                </div>
+                <div class="tech-item">
+                    <h3>HTML/CSS</h3>
+                    <p>UI components</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://github.com/your-username/Read-aloud" class="footer-link">GitHub Repository</a>
+                <a href="privacy-policy.html" class="footer-link" target="_blank">Privacy Policy</a>
+            </div>
+            <p class="copyright">© <span id="current-year">2023</span> Read Aloud. All rights reserved.</p>
+        </div>
     </footer>
+    
+    <script>
+        // Update copyright year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>

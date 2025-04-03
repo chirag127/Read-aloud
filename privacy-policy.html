@@ -3,135 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy - Read Aloud Chrome Extension</title>
+    <title>Privacy Policy - Read Aloud</title>
     <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent-color: #4285f4;
+            --accent-hover: #3367d6;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --transition-speed: 0.3s;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             line-height: 1.6;
-            color: #333;
+        }
+        
+        .container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 20px;
         }
+        
         header {
+            background-color: var(--bg-secondary);
+            padding: 2rem 0;
             text-align: center;
-            margin-bottom: 40px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
         }
-        h1 {
-            color: #4285f4;
-            margin-bottom: 10px;
+        
+        .header-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
         }
-        h2 {
-            color: #3367d6;
-            margin-top: 30px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-        .section {
-            margin-bottom: 30px;
-        }
-        .footer {
-            margin-top: 50px;
-            text-align: center;
-            font-size: 0.9em;
-            color: #666;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
-        .back-link {
+        
+        .back-btn {
             display: inline-block;
-            margin-top: 20px;
-            color: #4285f4;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent-color);
+            color: white;
             text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: background-color var(--transition-speed) ease;
+            margin-top: 1rem;
         }
-        .back-link:hover {
-            text-decoration: underline;
+        
+        .back-btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
         }
+        
+        .policy-section {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .policy-section h2 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-color);
+        }
+        
+        .policy-section p {
+            margin-bottom: 1rem;
+        }
+        
+        .policy-section ul {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .policy-section li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .permission-item {
+            background-color: rgba(66, 133, 244, 0.1);
+            border-left: 3px solid var(--accent-color);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .permission-item h3 {
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+        
         .last-updated {
             font-style: italic;
-            color: #666;
-            margin-top: 40px;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content h1 {
+                font-size: 2rem;
+            }
+            
+            .policy-section {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Privacy Policy</h1>
-        <p>Read Aloud Chrome Extension</p>
+        <div class="container">
+            <div class="header-content">
+                <h1>Privacy Policy</h1>
+                <p>Read Aloud Chrome Extension</p>
+                <a href="index.html" class="back-btn">← Back to Home</a>
+            </div>
+        </div>
     </header>
-
-    <main>
-        <section class="section">
+    
+    <div class="container">
+        <p class="last-updated">Last Updated: <span id="last-updated-date">November 2023</span></p>
+        
+        <div class="policy-section">
             <h2>Introduction</h2>
-            <p>This Privacy Policy explains how the Read Aloud Chrome extension ("we", "our", or "the extension") collects, uses, and protects your information when you use our extension. We are committed to ensuring the privacy and security of your data.</p>
-            <p>By installing and using the Read Aloud extension, you agree to the collection and use of information in accordance with this policy.</p>
-        </section>
-
-        <section class="section">
-            <h2>Information Collection and Use</h2>
-            <p>The Read Aloud extension is designed to operate with minimal data collection. Here's what we do and don't collect:</p>
-
-            <h3>What we collect:</h3>
-            <ul>
-                <li><strong>User Preferences:</strong> We store your settings (reading speed, pitch, and preferred voice) locally in your browser using Chrome's storage API. This information never leaves your device.</li>
-            </ul>
-
-            <h3>What we don't collect:</h3>
-            <ul>
-                <li><strong>Content of Web Pages:</strong> We do not collect, store, or transmit the content of the web pages you visit or the text that is read aloud.</li>
-                <li><strong>Browsing History:</strong> We do not track which websites you visit.</li>
-                <li><strong>Personal Information:</strong> We do not collect any personally identifiable information.</li>
-            </ul>
-        </section>
-
-        <section class="section">
+            <p>This Privacy Policy explains how the Read Aloud Chrome extension ("we", "our", or "the extension") collects, uses, and protects your information. We are committed to ensuring the privacy and security of our users while providing a helpful text-to-speech service.</p>
+            <p>Read Aloud is designed with privacy in mind, collecting only the minimum information necessary to provide its core functionality.</p>
+        </div>
+        
+        <div class="policy-section">
             <h2>Required Permissions</h2>
-            <p>The Read Aloud extension requires the following permissions to function properly:</p>
+            <p>Read Aloud requires the following permissions to function properly:</p>
+            
+            <div class="permission-item">
+                <h3>storage</h3>
+                <p><strong>Why we need it:</strong> This permission allows the extension to save your preferences (such as reading speed, pitch, and voice selection) locally on your device. This ensures your settings persist between browsing sessions.</p>
+            </div>
+            
+            <div class="permission-item">
+                <h3>activeTab</h3>
+                <p><strong>Why we need it:</strong> This permission gives the extension access to the currently active tab to extract text content for reading aloud and to apply word highlighting. The extension only accesses the tab when you explicitly activate it.</p>
+            </div>
+            
+            <div class="permission-item">
+                <h3>contextMenus</h3>
+                <p><strong>Why we need it:</strong> This permission allows the extension to add the "Read from this text" option to your right-click context menu. This enables you to start reading from any selected text on a webpage.</p>
+            </div>
+        </div>
+        
+        <div class="policy-section">
+            <h2>Information We Collect</h2>
+            <p>Read Aloud collects and processes the following information:</p>
             <ul>
-                <li><strong>storage:</strong> To save your preferences (speed, pitch, voice) between browser sessions.</li>
-                <li><strong>activeTab:</strong> To access the content of the current tab for text-to-speech functionality.</li>
-                <li><strong>contextMenus:</strong> To add the "Read from this text" option to your right-click menu.</li>
+                <li><strong>User Preferences:</strong> Your settings for reading speed, pitch, and preferred voice are stored locally on your device using Chrome's storage API.</li>
+                <li><strong>Temporary Text Content:</strong> When you use the extension, it temporarily processes the text content of the webpage you're viewing to provide the text-to-speech functionality.</li>
             </ul>
-            <p>These permissions are used solely for the purpose of providing the extension's core functionality and not for collecting or transmitting data.</p>
-        </section>
-
-        <section class="section">
-            <h2>Data Storage</h2>
-            <p>All user preferences are stored locally on your device using Chrome's storage API. This data remains on your device and is not transmitted to our servers or any third parties.</p>
-        </section>
-
-        <section class="section">
-            <h2>Text-to-Speech Processing</h2>
-            <p>The Read Aloud extension uses your browser's built-in Speech Synthesis API to convert text to speech. This processing happens entirely on your device. No text is sent to external servers for processing.</p>
-        </section>
-
-        <section class="section">
+            
+            <p><strong>What we DO NOT collect:</strong></p>
+            <ul>
+                <li>Personal identification information</li>
+                <li>Browsing history</li>
+                <li>Login credentials</li>
+                <li>Any data from websites you visit</li>
+                <li>Any analytics or usage statistics</li>
+            </ul>
+        </div>
+        
+        <div class="policy-section">
+            <h2>How We Use Your Information</h2>
+            <p>The information collected is used solely to:</p>
+            <ul>
+                <li>Provide the core text-to-speech functionality</li>
+                <li>Apply word highlighting as text is read</li>
+                <li>Remember your preferred settings</li>
+                <li>Enable the right-click context menu functionality</li>
+            </ul>
+            
+            <p>We do not use your information for any other purposes. We do not sell, rent, or share any information with third parties.</p>
+        </div>
+        
+        <div class="policy-section">
+            <h2>Data Storage & Security</h2>
+            <p>All user preferences are stored locally on your device using Chrome's secure storage API. No data is transmitted to external servers.</p>
+            <p>The text content that is read aloud is processed entirely within your browser and is not stored permanently or transmitted elsewhere.</p>
+        </div>
+        
+        <div class="policy-section">
             <h2>Third-Party Services</h2>
-            <p>The Read Aloud extension does not use any third-party analytics, tracking, or advertising services.</p>
-        </section>
-
-        <section class="section">
-            <h2>Children's Privacy</h2>
-            <p>The Read Aloud extension does not knowingly collect personal information from children under 13. If you are a parent or guardian and believe your child has provided us with personal information, please contact us so we can take necessary actions.</p>
-        </section>
-
-        <section class="section">
+            <p>Read Aloud does not use any third-party services, analytics, or external APIs beyond what is provided by the Chrome browser itself. The text-to-speech functionality uses your browser's built-in Web Speech API.</p>
+        </div>
+        
+        <div class="policy-section">
+            <h2>User Rights</h2>
+            <p>As a user of Read Aloud, you have the right to:</p>
+            <ul>
+                <li>Change or delete your preferences at any time through the extension's settings</li>
+                <li>Uninstall the extension, which will remove all locally stored preferences</li>
+            </ul>
+        </div>
+        
+        <div class="policy-section">
             <h2>Changes to This Privacy Policy</h2>
-            <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the extension accordingly. You are advised to review this Privacy Policy periodically for any changes.</p>
-        </section>
-
-        <section class="section">
-            <h2>Contact Us</h2>
-            <p>If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at chiragsinghal127@gmail.com.</p>
-        </section>
-
-        <p class="last-updated">Last updated: 04-04-2025</p>
-
-        <a href="index.html" class="back-link">← Back to Read Aloud Homepage</a>
-    </main>
-
-    <footer class="footer">
-        <p>© 2023 Read Aloud. All rights reserved.</p>
+            <p>We may update our Privacy Policy from time to time. We will notify you of any changes by updating the "Last Updated" date at the top of this Privacy Policy.</p>
+            <p>We encourage you to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
+        </div>
+        
+        <div class="policy-section">
+            <h2>Contact Information</h2>
+            <p>If you have any questions or concerns about this Privacy Policy or the Read Aloud extension, please contact us by:</p>
+            <ul>
+                <li>Opening an issue on our <a href="https://github.com/your-username/Read-aloud" style="color: var(--accent-color);">GitHub repository</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p class="copyright">© <span id="current-year">2023</span> Read Aloud. All rights reserved.</p>
+        </div>
     </footer>
+    
+    <script>
+        // Update copyright year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // Set last updated date (you can update this manually when you make changes)
+        const lastUpdated = new Date();
+        const options = { year: 'numeric', month: 'long' };
+        document.getElementById('last-updated-date').textContent = lastUpdated.toLocaleDateString('en-US', options);
+    </script>
 </body>
 </html>
