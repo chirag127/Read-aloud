@@ -1,8 +1,8 @@
-# Read Aloud - Chrome Extension
+# Read Aloud - Browser Extension
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-A Chrome extension that reads web pages aloud with word highlighting, providing an accessible and convenient way to consume web content.
+A Browser extension that reads web pages aloud with word highlighting, providing an accessible and convenient way to consume web content.
 
 ![Read Aloud Screenshot](extension/icons/icon128.png)
 
@@ -38,9 +38,9 @@ A Chrome extension that reads web pages aloud with word highlighting, providing 
     git clone https://github.com/chirag127/Read-aloud.git
     ```
 
-2. **Open Chrome Extensions Page**
+2. **Open Browser Extensions Page**
 
-    - Open Chrome and navigate to `chrome://extensions/`
+    - Open Browser and navigate to `chrome://extensions/`
     - Or go to Menu → More Tools → Extensions
 
 3. **Enable Developer Mode**
@@ -54,7 +54,7 @@ A Chrome extension that reads web pages aloud with word highlighting, providing 
 
 5. **Verify Installation**
     - The Read Aloud extension should appear in your extensions list
-    - The extension icon should be visible in your Chrome toolbar
+    - The extension icon should be visible in your Browser toolbar
 
 ## 🎮 Usage
 
@@ -86,7 +86,7 @@ A Chrome extension that reads web pages aloud with word highlighting, providing 
 ## 💻 Technology Stack
 
 -   **JavaScript**: Core programming language
--   **Chrome Extension API**: Browser integration
+-   **Browser Extension API**: Browser integration
 -   **Web Speech API**: Text-to-speech functionality
 -   **HTML/CSS**: User interface components
 
