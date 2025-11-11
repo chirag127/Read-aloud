@@ -60,6 +60,22 @@ function initializeReadAloud() {
         // Bookmark callback
         () => {
             handleBookmark();
+        },
+        // Skip backward sentence callback
+        () => {
+            speechManager.skipBackwardSentence();
+        },
+        // Skip forward sentence callback
+        () => {
+            speechManager.skipForwardSentence();
+        },
+        // Skip backward paragraph callback
+        () => {
+            speechManager.skipBackwardParagraph();
+        },
+        // Skip forward paragraph callback
+        () => {
+            speechManager.skipForwardParagraph();
         }
     );
 
@@ -395,6 +411,23 @@ function initializeReadAloud() {
                 floatingBar.hide();
             } else {
                 startReading();
+            }
+        }
+        
+        // Navigation shortcuts (Ctrl + Arrow keys)
+        if (e.ctrlKey && !e.shiftKey && !e.altKey) {
+            if (e.key === "ArrowUp") {
+                e.preventDefault();
+                speechManager.skipForwardSentence();
+            } else if (e.key === "ArrowDown") {
+                e.preventDefault();
+                speechManager.skipBackwardSentence();
+            } else if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                speechManager.skipBackwardParagraph();
+            } else if (e.key === "ArrowRight") {
+                e.preventDefault();
+                speechManager.skipForwardParagraph();
             }
         }
     });

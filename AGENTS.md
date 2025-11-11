@@ -2,28 +2,34 @@
 
 ## Commands
 
-**Initial setup:** No package installation needed. This is a vanilla JavaScript browser extension.
+**Setup:** None required (static browser extension - no dependencies)
 
-**Build:** No build step required. Use as-is.
+**Build:** Zip the `extension` folder for distribution
 
-**Lint:** No linter configured.
+**Lint:** No linter configured
 
-**Tests:** No test suite configured.
+**Tests:** No tests configured
 
-**Dev server:** Open `chrome://extensions/` in Chrome/Edge, enable Developer mode, click "Load unpacked", select the `extension/` folder.
+**Dev:** Load unpacked extension in browser at `chrome://extensions` (enable Developer mode)
 
-## Tech Stack & Architecture
+## Tech Stack
 
-- **Vanilla JavaScript** browser extension (Manifest V3)
-- **Web Speech API** for text-to-speech
-- **Chrome Extension APIs** for storage, context menus, and messaging
-- Architecture: Content scripts (`extension/js/*.js`) injected into pages, popup UI, background service worker
-- Main components: `speechSynthesis.js`, `highlighter.js`, `floatingBar.js`, `settingsPanel.js`, `textExtractor.js`, `storageManager.js`
+- **JavaScript (ES5/ES6)**: Vanilla JS with class-based architecture
+- **Chrome Extension Manifest V3**: Service worker, content scripts, storage API
+- **Web Speech API**: Text-to-speech synthesis
+- **HTML/CSS**: Popup and floating UI components
+
+## Architecture
+
+- `background.js`: Service worker for extension lifecycle and context menus
+- `content.js`: Main content script coordinator
+- `js/`: Modular components (storage, text extraction, highlighting, speech, UI)
+- Scripts loaded in order via `manifest.json` (no ES6 imports in content scripts)
 
 ## Code Style
 
-- ES6 classes for component organization
+- Classes with static methods (StorageManager) or instances (SpeechManager)
 - Promises for async operations
-- Chrome storage sync API for settings persistence
-- No imports/modules (scripts loaded via manifest order)
-- Minimal comments; self-documenting code preferred
+- Console logging for debugging
+- No semicolons in some files, present in others (inconsistent)
+- camelCase naming, descriptive function/variable names

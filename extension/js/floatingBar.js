@@ -39,6 +39,29 @@ class FloatingBar {
           <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
         </svg>
       </button>
+      <button id="read-aloud-skip-back-para" title="Skip Backward Paragraph (Ctrl+Left)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11,19 2,12 11,5"></polygon>
+          <polygon points="22,19 13,12 22,5"></polygon>
+        </svg>
+      </button>
+      <button id="read-aloud-skip-back-sent" title="Skip Backward Sentence (Ctrl+Down)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="15,18 8,12 15,6"></polygon>
+        </svg>
+      </button>
+      <button id="read-aloud-skip-forward-sent" title="Skip Forward Sentence (Ctrl+Up)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="9,18 16,12 9,6"></polygon>
+        </svg>
+      </button>
+      <button id="read-aloud-skip-forward-para" title="Skip Forward Paragraph (Ctrl+Right)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="2,19 11,12 2,5"></polygon>
+          <polygon points="13,19 22,12 13,5"></polygon>
+        </svg>
+      </button>
+      <div class="separator"></div>
       <button id="read-aloud-settings" title="Settings">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="3"></circle>
@@ -107,6 +130,10 @@ class FloatingBar {
         );
         const stopButton = document.getElementById("read-aloud-stop");
         const bookmarkButton = document.getElementById("read-aloud-bookmark");
+        const skipBackParaButton = document.getElementById("read-aloud-skip-back-para");
+        const skipBackSentButton = document.getElementById("read-aloud-skip-back-sent");
+        const skipForwardSentButton = document.getElementById("read-aloud-skip-forward-sent");
+        const skipForwardParaButton = document.getElementById("read-aloud-skip-forward-para");
         const settingsButton = document.getElementById("read-aloud-settings");
 
         // Store references to the SVG elements for play/pause toggle
@@ -136,6 +163,38 @@ class FloatingBar {
             bookmarkButton.addEventListener("click", () => {
                 if (this.onBookmarkCallback) {
                     this.onBookmarkCallback();
+                }
+            });
+        }
+
+        if (skipBackParaButton) {
+            skipBackParaButton.addEventListener("click", () => {
+                if (this.onSkipBackwardParagraphCallback) {
+                    this.onSkipBackwardParagraphCallback();
+                }
+            });
+        }
+
+        if (skipBackSentButton) {
+            skipBackSentButton.addEventListener("click", () => {
+                if (this.onSkipBackwardSentenceCallback) {
+                    this.onSkipBackwardSentenceCallback();
+                }
+            });
+        }
+
+        if (skipForwardSentButton) {
+            skipForwardSentButton.addEventListener("click", () => {
+                if (this.onSkipForwardSentenceCallback) {
+                    this.onSkipForwardSentenceCallback();
+                }
+            });
+        }
+
+        if (skipForwardParaButton) {
+            skipForwardParaButton.addEventListener("click", () => {
+                if (this.onSkipForwardParagraphCallback) {
+                    this.onSkipForwardParagraphCallback();
                 }
             });
         }
@@ -183,11 +242,19 @@ class FloatingBar {
      * @param {Function} onPlayPause - Callback for play/pause button
      * @param {Function} onStop - Callback for stop button
      * @param {Function} onBookmark - Callback for bookmark button
+     * @param {Function} onSkipBackwardSentence - Callback for skip backward sentence
+     * @param {Function} onSkipForwardSentence - Callback for skip forward sentence
+     * @param {Function} onSkipBackwardParagraph - Callback for skip backward paragraph
+     * @param {Function} onSkipForwardParagraph - Callback for skip forward paragraph
      */
-    setCallbacks(onPlayPause, onStop, onBookmark) {
+    setCallbacks(onPlayPause, onStop, onBookmark, onSkipBackwardSentence, onSkipForwardSentence, onSkipBackwardParagraph, onSkipForwardParagraph) {
         this.onPlayPauseCallback = onPlayPause;
         this.onStopCallback = onStop;
         this.onBookmarkCallback = onBookmark;
+        this.onSkipBackwardSentenceCallback = onSkipBackwardSentence;
+        this.onSkipForwardSentenceCallback = onSkipForwardSentence;
+        this.onSkipBackwardParagraphCallback = onSkipBackwardParagraph;
+        this.onSkipForwardParagraphCallback = onSkipForwardParagraph;
     }
 
     /**

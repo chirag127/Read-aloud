@@ -354,6 +354,209 @@ class SpeechManager {
             wordIndex: this.currentWordIndex,
         };
     }
+
+    /**
+     * Skip forward by sentence
+     */
+    skipForwardSentence() {
+        if (this.currentTextNodes.length === 0) return;
+
+        const currentNode = this.currentTextNodes[this.currentNodeIndex];
+        const fullText = currentNode.text;
+        const words = TextExtractor.splitIntoWords(fullText);
+        
+        // Get current character position
+        let currentCharIndex = 0;
+        if (this.currentWordIndex < words.length) {
+            currentCharIndex = words[this.currentWordIndex].startIndex;
+        }
+
+        // Find current sentence
+        const sentences = TextExtractor.splitIntoSentences(fullText);
+        let currentSentenceIndex = -1;
+        
+        for (let i = 0; i < sentences.length; i++) {
+            if (currentCharIndex >= sentences[i].startIndex && currentCharIndex < sentences[i].endIndex) {
+                currentSentenceIndex = i;
+                break;
+            }
+        }
+
+        // Move to next sentence
+        if (currentSentenceIndex !== -1 && currentSentenceIndex < sentences.length - 1) {
+            // Next sentence in same node
+            const nextSentence = sentences[currentSentenceIndex + 1];
+            const nextWordIndex = this.findWordIndexAtCharPosition(words, nextSentence.startIndex);
+            this.jumpToPosition(this.currentNodeIndex, nextWordIndex);
+        } else {
+            // Move to next node
+            if (this.currentNodeIndex < this.currentTextNodes.length - 1) {
+                this.jumpToPosition(this.currentNodeIndex + 1, 0);
+            }
+        }
+    }
+
+    /**
+     * Skip backward by sentence
+     */
+    skipBackwardSentence() {
+        if (this.currentTextNodes.length === 0) return;
+
+        const currentNode = this.currentTextNodes[this.currentNodeIndex];
+        const fullText = currentNode.text;
+        const words = TextExtractor.splitIntoWords(fullText);
+        
+        // Get current character position
+        let currentCharIndex = 0;
+        if (this.currentWordIndex < words.length) {
+            currentCharIndex = words[this.currentWordIndex].startIndex;
+        }
+
+        // Find current sentence
+        const sentences = TextExtractor.splitIntoSentences(fullText);
+        let currentSentenceIndex = -1;
+        
+        for (let i = 0; i < sentences.length; i++) {
+            if (currentCharIndex >= sentences[i].startIndex && currentCharIndex < sentences[i].endIndex) {
+                currentSentenceIndex = i;
+                break;
+            }
+        }
+
+        // Move to start of current sentence if not already there
+        if (currentSentenceIndex !== -1) {
+            const currentSentence = sentences[currentSentenceIndex];
+            const sentenceStartWordIndex = this.findWordIndexAtCharPosition(words, currentSentence.startIndex);
+            
+            // If we're past the start of the sentence, go to start
+            if (this.currentWordIndex > sentenceStartWordIndex) {
+                this.jumpToPosition(this.currentNodeIndex, sentenceStartWordIndex);
+                return;
+            }
+        }
+
+        // Move to previous sentence
+        if (currentSentenceIndex > 0) {
+            // Previous sentence in same node
+            const prevSentence = sentences[currentSentenceIndex - 1];
+            const prevWordIndex = this.findWordIndexAtCharPosition(words, prevSentence.startIndex);
+            this.jumpToPosition(this.currentNodeIndex, prevWordIndex);
+        } else {
+            // Move to previous node's last sentence
+            if (this.currentNodeIndex > 0) {
+                const prevNodeIndex = this.currentNodeIndex - 1;
+                const prevNode = this.currentTextNodes[prevNodeIndex];
+                const prevSentences = TextExtractor.splitIntoSentences(prevNode.text);
+                
+                if (prevSentences.length > 0) {
+                    const lastSentence = prevSentences[prevSentences.length - 1];
+                    const prevWords = TextExtractor.splitIntoWords(prevNode.text);
+                    const wordIndex = this.findWordIndexAtCharPosition(prevWords, lastSentence.startIndex);
+                    this.jumpToPosition(prevNodeIndex, wordIndex);
+                } else {
+                    this.jumpToPosition(prevNodeIndex, 0);
+                }
+            }
+        }
+    }
+
+    /**
+     * Skip forward by paragraph
+     */
+    skipForwardParagraph() {
+        if (this.currentTextNodes.length === 0) return;
+
+        const paragraphs = TextExtractor.findParagraphBoundaries(this.currentTextNodes);
+        
+        // Find next paragraph boundary
+        for (let i = 0; i < paragraphs.length; i++) {
+            if (paragraphs[i].nodeIndex > this.currentNodeIndex) {
+                this.jumpToPosition(paragraphs[i].nodeIndex, paragraphs[i].wordIndex);
+                return;
+            }
+        }
+
+        // If no next paragraph, go to last node
+        if (this.currentNodeIndex < this.currentTextNodes.length - 1) {
+            this.jumpToPosition(this.currentTextNodes.length - 1, 0);
+        }
+    }
+
+    /**
+     * Skip backward by paragraph
+     */
+    skipBackwardParagraph() {
+        if (this.currentTextNodes.length === 0) return;
+
+        const paragraphs = TextExtractor.findParagraphBoundaries(this.currentTextNodes);
+        
+        // Find current paragraph
+        let currentParagraphIndex = -1;
+        for (let i = paragraphs.length - 1; i >= 0; i--) {
+            if (paragraphs[i].nodeIndex <= this.currentNodeIndex) {
+                currentParagraphIndex = i;
+                break;
+            }
+        }
+
+        // Move to start of current paragraph if not already there
+        if (currentParagraphIndex !== -1) {
+            const currentParagraph = paragraphs[currentParagraphIndex];
+            if (this.currentNodeIndex > currentParagraph.nodeIndex || 
+                (this.currentNodeIndex === currentParagraph.nodeIndex && this.currentWordIndex > currentParagraph.wordIndex)) {
+                this.jumpToPosition(currentParagraph.nodeIndex, currentParagraph.wordIndex);
+                return;
+            }
+        }
+
+        // Move to previous paragraph
+        if (currentParagraphIndex > 0) {
+            const prevParagraph = paragraphs[currentParagraphIndex - 1];
+            this.jumpToPosition(prevParagraph.nodeIndex, prevParagraph.wordIndex);
+        } else {
+            // Go to beginning
+            this.jumpToPosition(0, 0);
+        }
+    }
+
+    /**
+     * Jump to a specific position and start reading
+     * @param {number} nodeIndex - The node index to jump to
+     * @param {number} wordIndex - The word index to start from
+     */
+    jumpToPosition(nodeIndex, wordIndex) {
+        const wasPlaying = this.isPlaying;
+        
+        this.stop();
+        this.currentNodeIndex = nodeIndex;
+        this.currentWordIndex = wordIndex;
+
+        if (wasPlaying) {
+            // Notify that reading is starting
+            if (this.onStartReadingCallback) {
+                this.onStartReadingCallback();
+            }
+            this.readCurrentNode();
+        }
+    }
+
+    /**
+     * Find word index at a character position
+     * @param {Array} words - Array of word objects
+     * @param {number} charIndex - Character index
+     * @returns {number} Word index
+     */
+    findWordIndexAtCharPosition(words, charIndex) {
+        for (let i = 0; i < words.length; i++) {
+            if (charIndex >= words[i].startIndex && charIndex <= words[i].endIndex) {
+                return i;
+            }
+            if (charIndex < words[i].startIndex) {
+                return Math.max(0, i);
+            }
+        }
+        return Math.max(0, words.length - 1);
+    }
 }
 
 // Export the class

@@ -354,6 +354,94 @@ class TextExtractor {
 
         return words;
     }
+
+    /**
+     * Split text into sentences
+     * @param {string} text - The text to split
+     * @returns {Array} Array of sentence objects with text and indices
+     */
+    static splitIntoSentences(text) {
+        const sentences = [];
+        // Match sentences ending with . ! ? followed by space or end of string
+        // Also handles abbreviations like Mr. Mrs. Dr. etc.
+        const regex = /[^.!?]+[.!?]+(?:\s+|$)/g;
+        let match;
+
+        while ((match = regex.exec(text)) !== null) {
+            const sentenceText = match[0].trim();
+            if (sentenceText.length > 0) {
+                sentences.push({
+                    text: sentenceText,
+                    startIndex: match.index,
+                    endIndex: match.index + match[0].length,
+                });
+            }
+        }
+
+        // Handle any remaining text that doesn't end with punctuation
+        if (sentences.length === 0 || sentences[sentences.length - 1].endIndex < text.length) {
+            const lastEndIndex = sentences.length > 0 ? sentences[sentences.length - 1].endIndex : 0;
+            const remainingText = text.substring(lastEndIndex).trim();
+            if (remainingText.length > 0) {
+                sentences.push({
+                    text: remainingText,
+                    startIndex: lastEndIndex,
+                    endIndex: text.length,
+                });
+            }
+        }
+
+        return sentences;
+    }
+
+    /**
+     * Find all paragraph boundaries in text nodes
+     * @param {Array} textNodes - Array of text node objects
+     * @returns {Array} Array of paragraph boundary objects with nodeIndex
+     */
+    static findParagraphBoundaries(textNodes) {
+        const paragraphs = [];
+        
+        for (let i = 0; i < textNodes.length; i++) {
+            const node = textNodes[i];
+            const parentElement = node.parentElement;
+            
+            // Check if this is a block-level element that typically starts a new paragraph
+            const blockElements = ['p', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li', 'blockquote', 'article', 'section'];
+            const tagName = parentElement.tagName.toLowerCase();
+            
+            // Start of a new paragraph if it's a block element or the first node
+            if (i === 0 || blockElements.includes(tagName)) {
+                // Check if previous node has different parent or is from a different block
+                if (i === 0 || textNodes[i - 1].parentElement !== parentElement) {
+                    paragraphs.push({
+                        nodeIndex: i,
+                        wordIndex: 0,
+                    });
+                }
+            }
+        }
+        
+        return paragraphs;
+    }
+
+    /**
+     * Find the sentence containing a given position
+     * @param {string} text - The text to search in
+     * @param {number} charIndex - The character index
+     * @returns {Object|null} Sentence object or null
+     */
+    static findSentenceAtPosition(text, charIndex) {
+        const sentences = TextExtractor.splitIntoSentences(text);
+        
+        for (let i = 0; i < sentences.length; i++) {
+            if (charIndex >= sentences[i].startIndex && charIndex < sentences[i].endIndex) {
+                return { ...sentences[i], index: i };
+            }
+        }
+        
+        return null;
+    }
 }
 
 // Export the class
