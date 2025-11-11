@@ -97,13 +97,15 @@ function initializeReadAloud() {
         settingsPanel.updateVoices(voices);
     });
 
-    // Load settings
+    // Load settings and apply theme
     Promise.all([
         speechManager.updateSettings(),
         settingsPanel.updateSettings(),
     ])
         .then(() => {
             console.log("Settings loaded");
+            const theme = settingsPanel.getSettings().theme;
+            settingsPanel.applyTheme(theme);
         })
         .catch((error) => {
             console.error("Error loading settings:", error);

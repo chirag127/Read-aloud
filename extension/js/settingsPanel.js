@@ -9,6 +9,7 @@ class SettingsPanel {
             speed: 1.0,
             pitch: 1.0,
             voice: "",
+            theme: "light",
         };
         this.voices = [];
         this.onSettingsChangeCallback = null;
@@ -32,6 +33,14 @@ class SettingsPanel {
         // Create panel content
         this.panel.innerHTML = `
       <h3>Read Aloud Settings</h3>
+
+      <div class="read-aloud-theme-toggle">
+        <label>Dark Mode</label>
+        <label class="read-aloud-theme-switch">
+          <input type="checkbox" id="read-aloud-theme" ${this.settings.theme === "dark" ? "checked" : ""}>
+          <span class="read-aloud-theme-slider"></span>
+        </label>
+      </div>
 
       <label for="read-aloud-speed">Speed</label>
       <div class="speed-presets">
@@ -84,6 +93,7 @@ class SettingsPanel {
         const speedInput = document.getElementById("read-aloud-speed");
         const pitchInput = document.getElementById("read-aloud-pitch");
         const voiceSelect = document.getElementById("read-aloud-voice");
+        const themeToggle = document.getElementById("read-aloud-theme");
         const speedValue = document.getElementById("read-aloud-speed-value");
         const pitchValue = document.getElementById("read-aloud-pitch-value");
         const speedPresets = document.querySelectorAll(".speed-preset");
@@ -120,6 +130,14 @@ class SettingsPanel {
         if (voiceSelect) {
             voiceSelect.addEventListener("change", () => {
                 this.settings.voice = voiceSelect.value;
+                this.saveSettings();
+            });
+        }
+
+        if (themeToggle) {
+            themeToggle.addEventListener("change", () => {
+                this.settings.theme = themeToggle.checked ? "dark" : "light";
+                this.applyTheme(this.settings.theme);
                 this.saveSettings();
             });
         }
@@ -175,6 +193,7 @@ class SettingsPanel {
             const speedInput = document.getElementById("read-aloud-speed");
             const pitchInput = document.getElementById("read-aloud-pitch");
             const voiceSelect = document.getElementById("read-aloud-voice");
+            const themeToggle = document.getElementById("read-aloud-theme");
             const speedValue = document.getElementById(
                 "read-aloud-speed-value"
             );
@@ -185,10 +204,13 @@ class SettingsPanel {
             if (speedInput) speedInput.value = this.settings.speed;
             if (pitchInput) pitchInput.value = this.settings.pitch;
             if (voiceSelect) voiceSelect.value = this.settings.voice;
+            if (themeToggle) themeToggle.checked = this.settings.theme === "dark";
             if (speedValue)
                 speedValue.textContent = this.settings.speed.toFixed(1) + "x";
             if (pitchValue)
                 pitchValue.textContent = this.settings.pitch.toFixed(1);
+
+            this.applyTheme(this.settings.theme);
 
             return this.settings;
         } catch (error) {
@@ -288,6 +310,18 @@ class SettingsPanel {
      */
     getSettings() {
         return this.settings;
+    }
+
+    /**
+     * Apply the theme to the document
+     * @param {string} theme - Theme to apply ("light" or "dark")
+     */
+    applyTheme(theme) {
+        if (theme === "dark") {
+            document.documentElement.setAttribute("data-read-aloud-theme", "dark");
+        } else {
+            document.documentElement.removeAttribute("data-read-aloud-theme");
+        }
     }
 }
 

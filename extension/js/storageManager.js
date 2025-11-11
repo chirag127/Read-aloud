@@ -10,7 +10,7 @@ class StorageManager {
         return new Promise((resolve, reject) => {
             try {
                 chrome.storage.sync.get(
-                    ["speed", "pitch", "voice"],
+                    ["speed", "pitch", "voice", "theme"],
                     (result) => {
                         if (chrome.runtime.lastError) {
                             console.error(
@@ -29,6 +29,8 @@ class StorageManager {
                                 result.pitch !== undefined ? result.pitch : 1.0,
                             voice:
                                 result.voice !== undefined ? result.voice : "",
+                            theme:
+                                result.theme !== undefined ? result.theme : "light",
                         };
                         resolve(settings);
                     }

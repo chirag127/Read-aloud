@@ -1,13 +1,46 @@
+/* CSS Variables for Theming */
+:root {
+    --ra-primary-bg: #4285f4;
+    --ra-primary-text: white;
+    --ra-panel-bg: white;
+    --ra-panel-text: #333;
+    --ra-label-text: #555;
+    --ra-border: #ddd;
+    --ra-accent: #4285f4;
+    --ra-separator: rgba(255, 255, 255, 0.5);
+    --ra-button-hover: rgba(255, 255, 255, 0.1);
+    --ra-shadow: rgba(0, 0, 0, 0.2);
+    --ra-highlight-bg: rgba(66, 133, 244, 0.2);
+    --ra-highlight-active: rgba(66, 133, 244, 0.5);
+    --ra-highlight-border: rgba(66, 133, 244, 0.7);
+}
+
+[data-read-aloud-theme="dark"] {
+    --ra-primary-bg: #1a1a1a;
+    --ra-primary-text: #e0e0e0;
+    --ra-panel-bg: #2d2d2d;
+    --ra-panel-text: #e0e0e0;
+    --ra-label-text: #b0b0b0;
+    --ra-border: #444;
+    --ra-accent: #5ea3ff;
+    --ra-separator: rgba(255, 255, 255, 0.2);
+    --ra-button-hover: rgba(255, 255, 255, 0.15);
+    --ra-shadow: rgba(0, 0, 0, 0.5);
+    --ra-highlight-bg: rgba(94, 163, 255, 0.2);
+    --ra-highlight-active: rgba(94, 163, 255, 0.4);
+    --ra-highlight-border: rgba(94, 163, 255, 0.6);
+}
+
 /* Floating control bar */
 #read-aloud-control-bar {
     position: fixed !important;
     top: 10px !important;
     right: 10px !important;
     z-index: 2147483647 !important; /* Maximum possible z-index value */
-    background-color: #4285f4 !important;
-    color: white !important;
+    background-color: var(--ra-primary-bg) !important;
+    color: var(--ra-primary-text) !important;
     border-radius: 4px !important;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
+    box-shadow: 0 2px 10px var(--ra-shadow),
         0 0 0 2px rgba(255, 255, 255, 0.8) !important;
     padding: 8px 12px !important;
     display: flex !important;
@@ -15,7 +48,7 @@
     font-family: Arial, sans-serif !important;
     user-select: none !important;
     cursor: move !important;
-    transition: opacity 0.3s ease !important;
+    transition: opacity 0.3s ease, background-color 0.3s ease, color 0.3s ease !important;
     min-width: 120px !important;
     min-height: 30px !important;
     backdrop-filter: blur(3px) !important;
@@ -31,7 +64,7 @@
 #read-aloud-control-bar button {
     background: none !important;
     border: none !important;
-    color: white !important;
+    color: var(--ra-primary-text) !important;
     cursor: pointer !important;
     margin: 0 5px !important;
     padding: 5px !important;
@@ -42,20 +75,22 @@
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    transition: opacity 0.2s ease, background-color 0.2s ease !important;
 }
 
 #read-aloud-control-bar button:hover {
     opacity: 0.8 !important;
-    background-color: rgba(255, 255, 255, 0.1) !important;
+    background-color: var(--ra-button-hover) !important;
 }
 
 #read-aloud-control-bar .separator {
     width: 1px !important;
     height: 20px !important;
-    background-color: rgba(255, 255, 255, 0.5) !important;
+    background-color: var(--ra-separator) !important;
     margin: 0 5px !important;
     position: relative !important;
     z-index: 2147483647 !important;
+    transition: background-color 0.3s ease !important;
 }
 
 /* Settings panel */
@@ -64,15 +99,16 @@
     top: 60px !important;
     right: 10px !important;
     z-index: 2147483646 !important; /* One less than the control bar */
-    background-color: white !important;
+    background-color: var(--ra-panel-bg) !important;
     border-radius: 4px !important;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(66, 133, 244, 0.3) !important;
+    box-shadow: 0 2px 10px var(--ra-shadow), 0 0 0 2px rgba(66, 133, 244, 0.3) !important;
     padding: 15px !important;
     width: 250px !important;
     font-family: Arial, sans-serif !important;
     display: none !important;
     backdrop-filter: blur(5px) !important;
     -webkit-backdrop-filter: blur(5px) !important;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
 }
 
 #read-aloud-settings-panel.visible {
@@ -82,18 +118,20 @@
 #read-aloud-settings-panel h3 {
     margin-top: 0 !important;
     margin-bottom: 15px !important;
-    color: #333 !important;
+    color: var(--ra-panel-text) !important;
     font-size: 16px !important;
     font-weight: bold !important;
     position: relative !important;
     z-index: 2147483646 !important;
+    transition: color 0.3s ease !important;
 }
 
 #read-aloud-settings-panel label {
     display: block;
     margin-bottom: 5px;
-    color: #555;
+    color: var(--ra-label-text);
     font-size: 14px;
+    transition: color 0.3s ease;
 }
 
 #read-aloud-settings-panel select,
@@ -101,9 +139,16 @@
     width: 100%;
     padding: 8px;
     margin-bottom: 15px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--ra-border);
     border-radius: 4px;
     font-size: 14px;
+    background-color: var(--ra-panel-bg);
+    color: var(--ra-panel-text);
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+#read-aloud-settings-panel input[type="range"] {
+    background-color: transparent;
 }
 
 #read-aloud-speed-value,
@@ -111,8 +156,67 @@
     display: inline-block;
     margin-left: 10px;
     font-weight: bold;
-    color: #4285f4;
+    color: var(--ra-accent);
     font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.read-aloud-theme-toggle {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 15px !important;
+}
+
+.read-aloud-theme-toggle label {
+    margin-bottom: 0 !important;
+}
+
+.read-aloud-theme-switch {
+    position: relative !important;
+    display: inline-block !important;
+    width: 50px !important;
+    height: 24px !important;
+}
+
+.read-aloud-theme-switch input {
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.read-aloud-theme-slider {
+    position: absolute !important;
+    cursor: pointer !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background-color: #ccc !important;
+    transition: background-color 0.3s ease !important;
+    border-radius: 24px !important;
+}
+
+.read-aloud-theme-slider:before {
+    position: absolute !important;
+    content: "" !important;
+    height: 18px !important;
+    width: 18px !important;
+    left: 3px !important;
+    bottom: 3px !important;
+    background-color: white !important;
+    transition: transform 0.3s ease !important;
+    border-radius: 50% !important;
+}
+
+.read-aloud-theme-switch input:checked + .read-aloud-theme-slider {
+    background-color: var(--ra-accent) !important;
+}
+
+.read-aloud-theme-switch input:checked + .read-aloud-theme-slider:before {
+    transform: translateX(26px) !important;
 }
 
 .speed-presets {
@@ -143,17 +247,18 @@
 
 /* Word highlighting */
 .read-aloud-highlight {
-    background-color: rgba(66, 133, 244, 0.2) !important;
+    background-color: var(--ra-highlight-bg) !important;
     border-radius: 2px !important;
-    transition: background-color 0.1s ease !important;
+    transition: background-color 0.3s ease !important;
     position: absolute !important;
     z-index: 2147483645 !important; /* High but below the control bar */
     pointer-events: none !important;
 }
 
 .read-aloud-highlight.active {
-    background-color: rgba(66, 133, 244, 0.5) !important;
-    box-shadow: 0 0 0 1px rgba(66, 133, 244, 0.7) !important;
+    background-color: var(--ra-highlight-active) !important;
+    box-shadow: 0 0 0 1px var(--ra-highlight-border) !important;
+    transition: background-color 0.1s ease, box-shadow 0.3s ease !important;
 }
 
 /* Animation for making the control bar more noticeable */
