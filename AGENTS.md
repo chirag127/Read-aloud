@@ -1,35 +1,37 @@
-# AGENTS.md
+# AGENTS.md - Developer Guide
 
 ## Commands
 
-**Setup:** None required (static browser extension - no dependencies)
+**Initial Setup:** None required (vanilla JavaScript browser extension)
 
-**Build:** Zip the `extension` folder for distribution
+**Build:** None (no build step)
 
-**Lint:** No linter configured
+**Lint:** None (no linter configured)
 
-**Tests:** No tests configured
+**Tests:** None (no test suite)
 
-**Dev:** Load unpacked extension in browser at `chrome://extensions` (enable Developer mode)
+**Dev Server:** Load extension in Chrome via `chrome://extensions/` → Enable "Developer mode" → "Load unpacked" → Select `extension/` folder
 
 ## Tech Stack
 
-- **JavaScript (ES5/ES6)**: Vanilla JS with class-based architecture
-- **Chrome Extension Manifest V3**: Service worker, content scripts, storage API
-- **Web Speech API**: Text-to-speech synthesis
-- **HTML/CSS**: Popup and floating UI components
+- Vanilla JavaScript (no frameworks)
+- Chrome Extension Manifest V3
+- Web Speech API for TTS
+- Chrome Storage API for settings persistence
 
 ## Architecture
 
-- `background.js`: Service worker for extension lifecycle and context menus
-- `content.js`: Main content script coordinator
-- `js/`: Modular components (storage, text extraction, highlighting, speech, UI)
-- Scripts loaded in order via `manifest.json` (no ES6 imports in content scripts)
+- `extension/manifest.json` - Extension configuration
+- `extension/background.js` - Service worker for context menu & initialization
+- `extension/content.js` - Main orchestrator, initializes all components
+- `extension/js/` - Modular components: `speechSynthesis.js`, `highlighter.js`, `floatingBar.js`, `settingsPanel.js`, `textExtractor.js`, `storageManager.js`
+- `extension/popup.js` - Extension popup UI logic
+- `extension/content.css` - Styling for injected UI elements
 
 ## Code Style
 
-- Classes with static methods (StorageManager) or instances (SpeechManager)
-- Promises for async operations
-- Console logging for debugging
-- No semicolons in some files, present in others (inconsistent)
-- camelCase naming, descriptive function/variable names
+- Use ES6 classes for components
+- Camelcase for variables/functions
+- `chrome.runtime.onMessage` for cross-script communication
+- All injected DOM elements use `!important` CSS to prevent page interference
+- Extensive `console.log` for debugging

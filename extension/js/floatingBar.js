@@ -23,6 +23,14 @@ class FloatingBar {
         this.bar.id = "read-aloud-control-bar";
         this.bar.className = "hidden";
         this.bar.innerHTML = `
+      <div id="read-aloud-progress-indicator" title="Reading progress">
+        <svg width="32" height="32" viewBox="0 0 36 36">
+          <circle cx="18" cy="18" r="16" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"></circle>
+          <circle id="read-aloud-progress-circle" cx="18" cy="18" r="16" fill="none" stroke="white" stroke-width="2" stroke-dasharray="100.53 100.53" stroke-dashoffset="100.53" stroke-linecap="round" transform="rotate(-90 18 18)"></circle>
+          <text id="read-aloud-progress-text" x="18" y="22" font-size="10" fill="white" text-anchor="middle" font-family="Arial, sans-serif">0%</text>
+        </svg>
+      </div>
+      <div class="separator"></div>
       <button id="read-aloud-play-pause" title="Play/Pause">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <polygon points="5,3 19,12 5,21"></polygon>
@@ -205,6 +213,26 @@ class FloatingBar {
                     this.settingsPanel.toggle();
                 }
             });
+        }
+    }
+
+    /**
+     * Update the progress indicator
+     * @param {number} percentage - Progress percentage (0-100)
+     */
+    updateProgress(percentage) {
+        const progressCircle = document.getElementById('read-aloud-progress-circle');
+        const progressText = document.getElementById('read-aloud-progress-text');
+        
+        if (progressCircle && progressText) {
+            percentage = Math.max(0, Math.min(100, percentage));
+            
+            const circumference = 2 * Math.PI * 16;
+            const offset = circumference - (percentage / 100) * circumference;
+            
+            progressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+            progressCircle.style.strokeDashoffset = offset;
+            progressText.textContent = `${Math.round(percentage)}%`;
         }
     }
 

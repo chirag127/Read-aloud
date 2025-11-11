@@ -55,6 +55,21 @@
     -webkit-backdrop-filter: blur(3px) !important;
 }
 
+#read-aloud-progress-indicator {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: default !important;
+}
+
+#read-aloud-progress-indicator svg {
+    display: block !important;
+}
+
+#read-aloud-progress-circle {
+    transition: stroke-dashoffset 0.3s ease !important;
+}
+
 #read-aloud-control-bar.hidden {
     opacity: 0 !important;
     pointer-events: none !important;

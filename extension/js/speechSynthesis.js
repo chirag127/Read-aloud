@@ -16,8 +16,10 @@ class SpeechManager {
             voice: "",
         };
         this.highlighter = null;
+        this.floatingBar = null;
         this.onBoundaryCallback = null;
         this.onEndCallback = null;
+        this.totalWords = 0;
 
         // Load available voices
         this.loadVoices();
@@ -60,6 +62,14 @@ class SpeechManager {
      */
     setHighlighter(highlighter) {
         this.highlighter = highlighter;
+    }
+
+    /**
+     * Set the floating bar instance
+     * @param {FloatingBar} floatingBar - The floating bar instance
+     */
+    setFloatingBar(floatingBar) {
+        this.floatingBar = floatingBar;
     }
 
     /**
@@ -115,6 +125,52 @@ class SpeechManager {
     }
 
     /**
+     * Calculate total words in all text nodes
+     * @returns {number} Total word count
+     */
+    calculateTotalWords() {
+        let total = 0;
+        for (const textNode of this.currentTextNodes) {
+            const words = TextExtractor.splitIntoWords(textNode.text);
+            total += words.length;
+        }
+        return total;
+    }
+
+    /**
+     * Calculate words read so far
+     * @param {number} nodeIndex - Current node index
+     * @param {number} wordIndex - Current word index
+     * @returns {number} Words read count
+     */
+    calculateWordsRead(nodeIndex, wordIndex) {
+        let wordsRead = 0;
+        
+        for (let i = 0; i < nodeIndex && i < this.currentTextNodes.length; i++) {
+            const words = TextExtractor.splitIntoWords(this.currentTextNodes[i].text);
+            wordsRead += words.length;
+        }
+        
+        wordsRead += wordIndex;
+        
+        return wordsRead;
+    }
+
+    /**
+     * Update progress indicator
+     * @param {number} nodeIndex - Current node index
+     * @param {number} wordIndex - Current word index
+     */
+    updateProgress(nodeIndex, wordIndex) {
+        if (!this.floatingBar || this.totalWords === 0) return;
+        
+        const wordsRead = this.calculateWordsRead(nodeIndex, wordIndex);
+        const percentage = (wordsRead / this.totalWords) * 100;
+        
+        this.floatingBar.updateProgress(percentage);
+    }
+
+    /**
      * Start reading from the given text nodes
      * @param {Array} textNodes - Array of text nodes to read
      * @param {number} startNodeIndex - Index of the node to start from
@@ -133,6 +189,9 @@ class SpeechManager {
         ) {
             return;
         }
+
+        this.totalWords = this.calculateTotalWords();
+        this.updateProgress(startNodeIndex, startWordIndex);
 
         // Notify that reading is starting
         if (this.onStartReadingCallback) {
@@ -221,6 +280,9 @@ class SpeechManager {
                         adjustedWordIndex
                     );
                 }
+                if (adjustedWordIndex !== -1) {
+                    this.updateProgress(this.currentNodeIndex, adjustedWordIndex);
+                }
                 if (this.onBoundaryCallback) {
                     this.onBoundaryCallback(
                         this.currentNodeIndex,
@@ -234,6 +296,7 @@ class SpeechManager {
         this.utterance.onend = () => {
             this.currentNodeIndex++;
             this.currentWordIndex = 0;
+            this.updateProgress(this.currentNodeIndex, 0);
             this.readCurrentNode();
         };
 
@@ -288,6 +351,9 @@ class SpeechManager {
         this.isPlaying = false;
         if (this.highlighter) {
             this.highlighter.clearHighlights();
+        }
+        if (this.floatingBar) {
+            this.floatingBar.updateProgress(0);
         }
     }
 

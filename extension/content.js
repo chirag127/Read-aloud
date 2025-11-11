@@ -25,6 +25,7 @@ function initializeReadAloud() {
 
     // Set up relationships between components
     speechManager.setHighlighter(highlighter);
+    speechManager.setFloatingBar(floatingBar);
     floatingBar.setSettingsPanel(settingsPanel);
 
     // Set up callbacks
