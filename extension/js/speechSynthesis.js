@@ -343,6 +343,17 @@ class SpeechManager {
     isCurrentlyPlaying() {
         return this.isPlaying;
     }
+
+    /**
+     * Get current reading position
+     * @returns {Object} Object with nodeIndex and wordIndex
+     */
+    getCurrentPosition() {
+        return {
+            nodeIndex: this.currentNodeIndex,
+            wordIndex: this.currentWordIndex,
+        };
+    }
 }
 
 // Export the class

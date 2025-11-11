@@ -56,6 +56,10 @@ function initializeReadAloud() {
         () => {
             speechManager.stop();
             floatingBar.hide();
+        },
+        // Bookmark callback
+        () => {
+            handleBookmark();
         }
     );
 
@@ -115,6 +119,7 @@ function initializeReadAloud() {
 
     // Track the current selection
     let currentSelection = null;
+    let hasBookmark = false;
 
     /**
      * Capture the current selection
@@ -126,6 +131,124 @@ function initializeReadAloud() {
         } else {
             currentSelection = null;
         }
+    }
+
+    /**
+     * Handle bookmark button click
+     */
+    function handleBookmark() {
+        const currentUrl = window.location.href;
+        const position = speechManager.getCurrentPosition();
+
+        if (hasBookmark) {
+            StorageManager.deleteBookmark(currentUrl)
+                .then(() => {
+                    hasBookmark = false;
+                    floatingBar.updateBookmarkButton(false);
+                    console.log("Bookmark deleted");
+                })
+                .catch((error) => {
+                    console.error("Error deleting bookmark:", error);
+                });
+        } else {
+            const bookmark = {
+                url: currentUrl,
+                nodeIndex: position.nodeIndex,
+                wordIndex: position.wordIndex,
+                timestamp: Date.now(),
+            };
+
+            StorageManager.saveBookmark(bookmark)
+                .then(() => {
+                    hasBookmark = true;
+                    floatingBar.updateBookmarkButton(true);
+                    console.log("Bookmark saved");
+                })
+                .catch((error) => {
+                    console.error("Error saving bookmark:", error);
+                });
+        }
+    }
+
+    /**
+     * Check for existing bookmark on page load
+     */
+    function checkForBookmark() {
+        const currentUrl = window.location.href;
+
+        StorageManager.getBookmark(currentUrl)
+            .then((bookmark) => {
+                if (bookmark) {
+                    hasBookmark = true;
+                    floatingBar.updateBookmarkButton(true);
+                    showResumePrompt(bookmark);
+                } else {
+                    hasBookmark = false;
+                    floatingBar.updateBookmarkButton(false);
+                }
+            })
+            .catch((error) => {
+                console.error("Error checking for bookmark:", error);
+            });
+    }
+
+    /**
+     * Show resume prompt when a bookmark is found
+     * @param {Object} bookmark - The bookmark object
+     */
+    function showResumePrompt(bookmark) {
+        const prompt = document.createElement("div");
+        prompt.id = "read-aloud-resume-prompt";
+        prompt.className = "read-aloud-resume-prompt";
+        prompt.innerHTML = `
+            <div class="read-aloud-resume-content">
+                <p>Resume reading from where you left off?</p>
+                <div class="read-aloud-resume-buttons">
+                    <button id="read-aloud-resume-yes">Resume</button>
+                    <button id="read-aloud-resume-no">Start Over</button>
+                    <button id="read-aloud-resume-dismiss">Dismiss</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(prompt);
+
+        document
+            .getElementById("read-aloud-resume-yes")
+            .addEventListener("click", () => {
+                const textNodes = TextExtractor.extractTextNodes();
+                highlighter.setTextNodes(textNodes);
+                speechManager.startReading(
+                    textNodes,
+                    bookmark.nodeIndex,
+                    bookmark.wordIndex
+                );
+                prompt.remove();
+            });
+
+        document
+            .getElementById("read-aloud-resume-no")
+            .addEventListener("click", () => {
+                StorageManager.deleteBookmark(window.location.href);
+                hasBookmark = false;
+                floatingBar.updateBookmarkButton(false);
+                const textNodes = TextExtractor.extractTextNodes();
+                highlighter.setTextNodes(textNodes);
+                speechManager.startReading(textNodes, 0, 0);
+                prompt.remove();
+            });
+
+        document
+            .getElementById("read-aloud-resume-dismiss")
+            .addEventListener("click", () => {
+                prompt.remove();
+            });
+
+        setTimeout(() => {
+            if (prompt.parentNode) {
+                prompt.remove();
+            }
+        }, 10000);
     }
 
     /**
@@ -306,4 +429,6 @@ function initializeReadAloud() {
             );
         }
     });
+
+    checkForBookmark();
 }

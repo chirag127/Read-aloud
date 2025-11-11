@@ -34,6 +34,11 @@ class FloatingBar {
         </svg>
       </button>
       <div class="separator"></div>
+      <button id="read-aloud-bookmark" title="Bookmark">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+        </svg>
+      </button>
       <button id="read-aloud-settings" title="Settings">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="3"></circle>
@@ -101,10 +106,12 @@ class FloatingBar {
             "read-aloud-play-pause"
         );
         const stopButton = document.getElementById("read-aloud-stop");
+        const bookmarkButton = document.getElementById("read-aloud-bookmark");
         const settingsButton = document.getElementById("read-aloud-settings");
 
         // Store references to the SVG elements for play/pause toggle
         this.playIcon = playPauseButton.querySelector("svg");
+        this.bookmarkIcon = bookmarkButton.querySelector("svg");
 
         // Set up click handlers
         if (playPauseButton) {
@@ -121,6 +128,14 @@ class FloatingBar {
                 if (this.onStopCallback) {
                     this.onStopCallback();
                     this.updatePlayPauseButton(false);
+                }
+            });
+        }
+
+        if (bookmarkButton) {
+            bookmarkButton.addEventListener("click", () => {
+                if (this.onBookmarkCallback) {
+                    this.onBookmarkCallback();
                 }
             });
         }
@@ -167,10 +182,26 @@ class FloatingBar {
      * Set callbacks for bar button actions
      * @param {Function} onPlayPause - Callback for play/pause button
      * @param {Function} onStop - Callback for stop button
+     * @param {Function} onBookmark - Callback for bookmark button
      */
-    setCallbacks(onPlayPause, onStop) {
+    setCallbacks(onPlayPause, onStop, onBookmark) {
         this.onPlayPauseCallback = onPlayPause;
         this.onStopCallback = onStop;
+        this.onBookmarkCallback = onBookmark;
+    }
+
+    /**
+     * Update the bookmark button to show bookmarked state
+     * @param {boolean} isBookmarked - Whether the current page has a bookmark
+     */
+    updateBookmarkButton(isBookmarked) {
+        if (!this.bookmarkIcon) return;
+
+        if (isBookmarked) {
+            this.bookmarkIcon.setAttribute("fill", "currentColor");
+        } else {
+            this.bookmarkIcon.setAttribute("fill", "none");
+        }
     }
 
     /**
