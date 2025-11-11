@@ -115,6 +115,32 @@
     font-size: 14px;
 }
 
+.speed-presets {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.speed-preset {
+    flex: 1;
+    padding: 6px 8px;
+    background-color: #f1f3f4;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #333;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.speed-preset:hover {
+    background-color: #e8eaed;
+}
+
+.speed-preset:active {
+    background-color: #d2e3fc;
+}
+
 /* Word highlighting */
 .read-aloud-highlight {
     background-color: rgba(66, 133, 244, 0.2) !important;

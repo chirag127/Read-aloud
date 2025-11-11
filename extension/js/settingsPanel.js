@@ -34,7 +34,13 @@ class SettingsPanel {
       <h3>Read Aloud Settings</h3>
 
       <label for="read-aloud-speed">Speed</label>
-      <input type="range" id="read-aloud-speed" min="0.5" max="32" step="0.1" value="${
+      <div class="speed-presets">
+        <button class="speed-preset" data-speed="0.75">0.75x</button>
+        <button class="speed-preset" data-speed="1">1x</button>
+        <button class="speed-preset" data-speed="1.5">1.5x</button>
+        <button class="speed-preset" data-speed="2">2x</button>
+      </div>
+      <input type="range" id="read-aloud-speed" min="0.5" max="4" step="0.1" value="${
           this.settings.speed
       }">
       <span id="read-aloud-speed-value">${this.settings.speed.toFixed(
@@ -80,15 +86,27 @@ class SettingsPanel {
         const voiceSelect = document.getElementById("read-aloud-voice");
         const speedValue = document.getElementById("read-aloud-speed-value");
         const pitchValue = document.getElementById("read-aloud-pitch-value");
+        const speedPresets = document.querySelectorAll(".speed-preset");
 
         if (speedInput) {
             speedInput.addEventListener("input", () => {
-                const value = parseFloat(speedInput.value);
+                let value = parseFloat(speedInput.value);
+                value = Math.min(4, Math.max(0.5, value));
                 this.settings.speed = value;
                 if (speedValue) speedValue.textContent = value.toFixed(1) + "x";
                 this.saveSettings();
             });
         }
+
+        speedPresets.forEach((button) => {
+            button.addEventListener("click", () => {
+                const speed = parseFloat(button.dataset.speed);
+                this.settings.speed = speed;
+                if (speedInput) speedInput.value = speed;
+                if (speedValue) speedValue.textContent = speed.toFixed(1) + "x";
+                this.saveSettings();
+            });
+        });
 
         if (pitchInput) {
             pitchInput.addEventListener("input", () => {

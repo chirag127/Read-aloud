@@ -172,7 +172,7 @@ class SpeechManager {
         }
 
         this.utterance = new SpeechSynthesisUtterance(text);
-        this.utterance.rate = this.settings.speed;
+        this.utterance.rate = Math.min(4, Math.max(0.5, this.settings.speed));
         this.utterance.pitch = this.settings.pitch;
 
         // Set voice if specified
